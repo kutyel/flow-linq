@@ -10,8 +10,8 @@
  *
  */
 
-import Helper from './ComparerHelper';
 import OrderedList from './OrderedList';
+import { comparerForKey } from './ComparerFunctions';
 
 class List<T> {
 
@@ -41,7 +41,7 @@ class List<T> {
     /**
      * Applies an accumulator function over a sequence.
      */
-    aggregate(accumulator: (accum: any, value?: T, index?: number, list?: T[]) => any, initialValue?: any): any {
+    aggregate<U>(accumulator: (accum: U, value?: T, index?: number, list?: T[]) => any, initialValue?: U): any {
         return this._elements.reduce(accumulator, initialValue);
     }
 
@@ -156,7 +156,7 @@ class List<T> {
      * Correlates the elements of two sequences based on equality of keys and groups the results.
      * The default equality comparer is used to compare keys.
      */
-    groupJoin(list: List<any>, key1: (k: T) => any, key2: (k: any) => any, result: (first: T, second: List<any>) => any): List<any> {
+    groupJoin<U>(list: List<U>, key1: (k: T) => any, key2: (k: any) => any, result: (first: T, second: List<U>) => any): List<any> {
         return this.select((x, y) => result(x, list.where(z => key1(x) === key2(z))));
     }
 
@@ -177,7 +177,7 @@ class List<T> {
     /**
      * Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
      */
-    join(list: List<any>, key1: (key: T) => any, key2: (key: any) => any, result: (first: T, second: any) => any): List<any> {
+    join<U>(list: List<U>, key1: (key: T) => any, key2: (key: U) => any, result: (first: T, second: U) => any): List<any> {
         return this.selectMany(x => list.where(y => key2(y) === key1(x)).select(z => result(x, z)));
     }
 
@@ -213,14 +213,14 @@ class List<T> {
      * Sorts the elements of a sequence in ascending order according to a key.
      */
     orderBy(keySelector: (key: T) => any): List<T> {
-        return new OrderedList(this._elements, Helper.comparerForKey(keySelector, false));
+        return new OrderedList(this._elements, comparerForKey(keySelector, false));
     }
 
     /**
      * Sorts the elements of a sequence in descending order according to a key.
      */
     orderByDescending(keySelector: (key: T) => any): List<T> {
-        return new OrderedList(this._elements, Helper.comparerForKey(keySelector, true));
+        return new OrderedList(this._elements, comparerForKey(keySelector, true));
     }
 
     /**
@@ -386,7 +386,7 @@ class List<T> {
     /**
      * Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
      */
-    zip(list: List<any>, result: (first: T, second: any) => any): List<any> {
+    zip<U>(list: List<U>, result: (first: T, second: U) => any): List<any> {
         return list.count() < this.count() ? list.select((x, y) => result(this.elementAt(y), x)) :
             this.select((x, y) => result(x, list.elementAt(y)));
     }

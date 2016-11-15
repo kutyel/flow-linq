@@ -1,7 +1,7 @@
 // @flow
 
 import List from './List';
-import Helper from './ComparerHelper';
+import { comparerForKey, composeComparers } from './ComparerFunctions';
 
 /**
  * Represents a sorted sequence. The methods of this class are implemented by using deferred execution.
@@ -11,9 +11,12 @@ import Helper from './ComparerHelper';
  */
 class OrderedList<T> extends List<T> {
 
-    constructor(elements: T[], _comparer: (a: T, b: T) => number) {
+    _comparer: (a: T, b: T) => number;
+
+    constructor(elements: T[], comparer: (a: T, b: T) => number) {
         super(elements);
-        this._elements.sort(_comparer);
+        this._comparer = comparer;
+        this._elements.sort(this._comparer);
     }
 
     /**
@@ -24,10 +27,7 @@ class OrderedList<T> extends List<T> {
      * @returns {OrderedList}
      */
     thenBy(keySelector: (key: T) => any): List<T> {
-        return new OrderedList(
-            this._elements,
-            Helper.composeComparers(this._comparer, Helper.comparerForKey(keySelector, false))
-        );
+        return new OrderedList(this._elements, composeComparers(this._comparer, comparerForKey(keySelector, false)));
     }
 
     /**
@@ -38,10 +38,7 @@ class OrderedList<T> extends List<T> {
      * @returns {OrderedList}
      */
     thenByDescending(keySelector: (key: T) => any): List<T> {
-        return new OrderedList(
-            this._elements,
-            Helper.composeComparers(this._comparer, Helper.comparerForKey(keySelector, true))
-        );
+        return new OrderedList(this._elements, composeComparers(this._comparer, comparerForKey(keySelector, true)));
     }
 }
 
