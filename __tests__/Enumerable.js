@@ -7,7 +7,7 @@ describe('Enumerable class', () => {
     });
 
     it('Repeat', () => {
-        const test = Enumerable.Repeat('I like programming', 3);
+        const test = Enumerable.repeat('I like programming', 3);
         expect(test.elementAt(0)).toBe('I like programming');
         expect(test.elementAt(1)).toBe('I like programming');
         expect(test.elementAt(2)).toBe('I like programming');
