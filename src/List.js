@@ -3,7 +3,8 @@
  *
  * JavaScript implementation of LinQ with flow annotations!
  *
- * Documentation from LinQ .NET specification (https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
+ * Documentation from LinQ .NET specification
+ * (https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
  *
  * Created by Flavio Corpa (@kutyel)
  * Copyright © 2016 Flavio Corpa. All rights reserved.
@@ -41,7 +42,7 @@ class List<T> {
     /**
      * Applies an accumulator function over a sequence.
      */
-    aggregate<U>(accumulator: (accum: U, value?: T, index?: number, list?: T[]) => any, initialValue?: U): any {
+    aggregate<U>(accumulator: (accum: U, value: T, index: number, list: T[]) => U, initialValue: U): U {
         return this._elements.reduce(accumulator, initialValue);
     }
 
@@ -324,7 +325,7 @@ class List<T> {
      * a transform function on each element of the input sequence.
      */
     sum(transform?: (value?: T, index?: number, list?: T[]) => number): number {
-        return transform ? this.select(transform).sum() : this.aggregate((ac, v) => ac + v, 0);
+        return transform ? this.select(transform).sum() : this.aggregate((ac, v) => ac + Number(v), 0);
     }
 
     /**
