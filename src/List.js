@@ -79,7 +79,7 @@ class List<T> {
      * Determines whether an element is in the List<T>.
      */
     contains(element: T): boolean {
-        return this._elements.some(x => x === element);
+        return this._elements.includes(element);
     }
 
     /**
@@ -93,7 +93,7 @@ class List<T> {
      * Returns the elements of the specified sequence or the type parameter's default value
      * in a singleton collection if the sequence is empty.
      */
-    defaultIfEmpty(defaultValue?: T): List<T> {
+    defaultIfEmpty(defaultValue: T): List<T> {
         return this.count() ? this : new List([defaultValue]);
     }
 
