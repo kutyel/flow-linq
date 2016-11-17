@@ -2,7 +2,7 @@
 
 import List from './List';
 
-class Enumerable {
+class Enumerable<T> {
 
     /**
      * Generates a sequence of integer numbers within a specified range.
