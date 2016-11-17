@@ -3,7 +3,7 @@ import Enumerable from '../src/Enumerable';
 describe('Enumerable class', () => {
 
     it('Range', () => {
-        expect(Enumerable.range(1, 10).toString()).toEqual('1,2,3,4,5,6,7,8,9,10');
+        expect(Enumerable.range(1, 10).toArray().toString()).toEqual('1,2,3,4,5,6,7,8,9,10');
     });
 
     it('Repeat', () => {

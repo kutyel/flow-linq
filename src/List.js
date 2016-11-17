@@ -11,7 +11,7 @@
  *
  */
 
-import OrderedList from './OrderedList';
+// import OrderedList from './OrderedList';
 import { comparerForKey } from './ComparerFunctions';
 
 class List<T> {
@@ -210,33 +210,33 @@ class List<T> {
         return this.aggregate((x, y) => x < y ? x : y);
     }
 
-    /**
-     * Sorts the elements of a sequence in ascending order according to a key.
-     */
-    orderBy(keySelector: (key: T) => any): List<T> {
-        return new OrderedList(this._elements, comparerForKey(keySelector, false));
-    }
+    // /**
+    //  * Sorts the elements of a sequence in ascending order according to a key.
+    //  */
+    // orderBy(keySelector: (key: T) => any): List<T> {
+    //     return new OrderedList(this._elements, comparerForKey(keySelector, false));
+    // }
 
-    /**
-     * Sorts the elements of a sequence in descending order according to a key.
-     */
-    orderByDescending(keySelector: (key: T) => any): List<T> {
-        return new OrderedList(this._elements, comparerForKey(keySelector, true));
-    }
+    // /**
+    //  * Sorts the elements of a sequence in descending order according to a key.
+    //  */
+    // orderByDescending(keySelector: (key: T) => any): List<T> {
+    //     return new OrderedList(this._elements, comparerForKey(keySelector, true));
+    // }
 
-    /**
-     * Performs a subsequent ordering of the elements in a sequence in ascending order according to a key.
-     */
-    thenBy(keySelector: (key: T) => any): List<T> {
-        return this.orderBy(keySelector);
-    }
+    // /**
+    //  * Performs a subsequent ordering of the elements in a sequence in ascending order according to a key.
+    //  */
+    // thenBy(keySelector: (key: T) => any): List<T> {
+    //     return this.orderBy(keySelector);
+    // }
 
-    /**
-     * Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
-     */
-    thenByDescending(keySelector: (key: T) => any): List<T> {
-        return this.orderByDescending(keySelector);
-    }
+    // /**
+    //  * Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
+    //  */
+    // thenByDescending(keySelector: (key: T) => any): List<T> {
+    //     return this.orderByDescending(keySelector);
+    // }
 
     /**
      * Removes the first occurrence of a specific object from the List<T>.
