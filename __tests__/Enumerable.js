@@ -1,5 +1,6 @@
 // @flow
 
+import type List from '../src/List';
 import Enumerable from '../src/Enumerable';
 
 describe('Enumerable class', () => {
@@ -9,11 +10,11 @@ describe('Enumerable class', () => {
     });
 
     it('Repeat', () => {
-        const test: Enumerable<string> = Enumerable.repeat('I like programming', 3);
+        const test: List<string> = Enumerable.repeat('I like programming', 3);
         expect(test.elementAt(0)).toBe('I like programming');
         expect(test.elementAt(1)).toBe('I like programming');
         expect(test.elementAt(2)).toBe('I like programming');
         expect(test.elementAt(3)).toBeUndefined();
-    })
+    });
 
 });
