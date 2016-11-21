@@ -44,7 +44,7 @@ class List<T> {
      */
     aggregate<U>(
         accumulator: (accum: U, value: T, index: number, list: T[]) => U,
-        initialValue?: U
+        initialValue: U
     ): U {
         return this._elements.reduce(accumulator, initialValue);
     }
@@ -244,14 +244,14 @@ class List<T> {
      * Returns the maximum value in a generic sequence.
      */
     max(): T {
-        return this.aggregate((x, y) => x > y ? x : y);
+        return this.aggregate((x, y) => x > y ? x : y, this.first());
     }
 
     /**
      * Returns the minimum value in a generic sequence.
      */
     min(): T {
-        return this.aggregate((x, y) => x < y ? x : y);
+        return this.aggregate((x, y) => x < y ? x : y, this.first());
     }
 
     /**
@@ -326,7 +326,7 @@ class List<T> {
     /**
      * Projects each element of a sequence into a new form.
      */
-    select(mapper: (value?: T, index?: number, list?: T[]) => any): List<any> {
+    select(mapper: (value: T, index: number, list?: T[]) => any): List<any> {
         return new List(this._elements.map(mapper));
     }
 
@@ -335,7 +335,7 @@ class List<T> {
      * resulting sequences into one sequence.
      */
     selectMany(
-        mapper: (value?: T, index?: number, list?: T[]) => any
+        mapper: (value: T, index?: number, list?: T[]) => any
     ): List<any> {
         return this.aggregate((ac, v, i) =>
             (ac.addRange(this.select(mapper).elementAt(i).toArray()), ac),
@@ -344,11 +344,11 @@ class List<T> {
 
     /**
      * Determines whether two sequences are equal by comparing the elements by
-     *  using the default equality comparer for their type.
+     * using the default equality comparer for their type.
      */
     sequenceEqual(list: List<T>): boolean {
         return !!this._elements.reduce((x, y, z) =>
-            list._elements[z] === y ? x : false);
+            list._elements[z] === y ? x : undefined);
     }
 
     /**
