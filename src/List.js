@@ -53,7 +53,7 @@ class List<T> {
      * Determines whether all elements of a sequence satisfy a condition.
      */
     all(
-        predicate: (value?: T, index?: number, list?: T[]) => boolean
+        predicate: (value: T, index?: number, list?: T[]) => boolean
     ): boolean {
         return this._elements.every(predicate);
     }
