@@ -110,7 +110,7 @@
         "no-proto": 2,
         "no-return-assign": 0,
         "no-script-url": 2,
-        "no-sequences": 2,
+        "no-sequences": 0,
         "no-shadow": 0,
         "no-trailing-spaces": 2,
         "no-undef": 2,
