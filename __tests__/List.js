@@ -18,11 +18,6 @@ type Pet = {
     age: number;
     owner?: Person;
     vaccinated?: boolean;
-}
-
-type Product = {
-    name: string;
-    code: number;
 };
 
 describe('List class', () => {
@@ -80,7 +75,7 @@ describe('List class', () => {
         expect(people.average(x => x.age)).toEqual(30);
     });
 
-    test('ToLookup', () => {
+    test('toLookup', () => {
         // create a list of Packages
         const packages: List<Package> = new List([
             {
@@ -131,6 +126,16 @@ describe('List class', () => {
             ]
         };
         expect(lookup).toEqual(result);
+    });
+
+    test('union', () => {
+        const expected = '5,3,9,7,8,6,4,1,0';
+        const ints1: List<number> = new List([5, 3, 9, 7, 5, 9, 3, 7]);
+        const ints2: List<number> = new List([8, 3, 6, 4, 4, 9, 1, 0]);
+        expect(ints1.union(ints2).toArray().toString()).toBe(expected);
+
+        // TODO: give default equality comparer for objects
+        // expect(store1.union(store2).toArray()).toEqual(result);
     });
 
 });
