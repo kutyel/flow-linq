@@ -62,7 +62,7 @@ class List<T> {
      * Determines whether a sequence contains any elements.
      */
     any(
-        predicate: (value?: T, index?: number, list?: T[]) => boolean
+        predicate: (value: T, index?: number, list?: T[]) => boolean
     ): boolean {
         return this._elements.some(predicate);
     }

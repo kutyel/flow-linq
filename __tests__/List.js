@@ -15,7 +15,7 @@ type Person = {
 
 type Pet = {
     name: string;
-    age?: number;
+    age: number;
     owner?: Person;
     vaccinated?: boolean;
 }
@@ -55,7 +55,18 @@ describe('List class', () => {
             { age: 4, name: 'Boots' },
             { age: 6, name: 'Whiskers' }
         ]);
+        // determine whether all pet names in the array start with 'B'.
         expect(pets.all(pet => pet.name.startsWith('B'))).toBe(false);
+    });
+
+    it('any', () => {
+        const pets: List<Pet> = new List([
+            { age: 10, name: 'Barley', vaccinated: true },
+            { age: 4, name: 'Boots', vaccinated: false },
+            { age: 6, name: 'Whiskers', vaccinated: false }
+        ]);
+        // determine whether any pets over age 1 are also unvaccinated.
+        expect(pets.any(pet => pet.age > 1 && !pet.vaccinated)).toBe(true);
     });
 
 });
