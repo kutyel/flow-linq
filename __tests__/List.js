@@ -46,7 +46,7 @@ describe('List class', () => {
         const words: List<string> = new List(sentence.split(' '));
         expect(
             words.aggregate((workingSentence, next) =>
-            `${next} ${workingSentence}`, '')).toEqual(reversed);
+                `${next} ${workingSentence}`, '')).toEqual(reversed);
     });
 
     test('all', () => {
@@ -78,6 +78,59 @@ describe('List class', () => {
         ]);
         expect(grades.average()).toEqual(77.6);
         expect(people.average(x => x.age)).toEqual(30);
+    });
+
+    test('ToLookup', () => {
+        // create a list of Packages
+        const packages: List<Package> = new List([
+            {
+                company: 'Coho Vineyard',
+                trackingNumber: 89453312,
+                weight: 25.2
+            },
+            {
+                company: 'Lucerne Publishing',
+                trackingNumber: 89112755,
+                weight: 18.7
+            },
+            {
+                company: 'Wingtip Toys',
+                trackingNumber: 299456122,
+                weight: 6.0
+            },
+            {
+                company: 'Contoso Pharmaceuticals',
+                trackingNumber: 670053128,
+                weight: 9.3
+            },
+            {
+                company: 'Wide World Importers',
+                trackingNumber: 4665518773,
+                weight: 33.8
+            }
+        ]);
+
+        // create a Lookup to organize the packages.
+        // use the first character of Company as the key value.
+        // select Company appended to TrackingNumber
+        // as the element values of the Lookup.
+        const lookup = packages
+            .toLookup(p => p.company.substring(0, 1),
+            p => `${p.company} ${p.trackingNumber}`);
+        const result = {
+            'C': [
+                'Coho Vineyard 89453312',
+                'Contoso Pharmaceuticals 670053128'
+            ],
+            'L': [
+                'Lucerne Publishing 89112755'
+            ],
+            'W': [
+                'Wingtip Toys 299456122',
+                'Wide World Importers 4665518773'
+            ]
+        };
+        expect(lookup).toEqual(result);
     });
 
 });
