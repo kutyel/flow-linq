@@ -72,7 +72,7 @@ class List<T> {
      * invoking a transform function on each element of the input sequence.
      */
     average(
-        transform?: (value?: T, index?: number, list?: T[]) => any
+        transform?: (value: T, index?: number, list?: T[]) => any
     ): number {
         return this.sum(transform) / this.count(transform);
     }
@@ -95,7 +95,7 @@ class List<T> {
      * Returns the number of elements in a sequence.
      */
     count(
-        predicate?: (value?: T, index?: number, list?: T[]) => boolean
+        predicate?: (value: T, index?: number, list?: T[]) => boolean
     ): number {
         return predicate ?
             this.where(predicate).count() :
@@ -397,7 +397,7 @@ class List<T> {
      * invoking a transform function on each element of the input sequence.
      */
     sum(
-        transform?: (value?: T, index?: number, list?: T[]) => number
+        transform?: (value: T, index?: number, list?: T[]) => number
     ): number {
         return transform ? this.select(transform).sum() :
             this.aggregate((ac, v) => ac + Number(v), 0);

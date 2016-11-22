@@ -27,20 +27,20 @@ type Product = {
 
 describe('List class', () => {
 
-    it('add', () => {
+    test('add', () => {
         const string = 'string';
         const list: List<string> = new List();
         list.add(string);
         expect(list.first()).toBe(string);
     });
 
-    it('addRange', () => {
+    test('addRange', () => {
         const list: List<number> = new List();
         list.addRange([1, 2, 3, 4, 5]);
         expect(list.toArray().toString()).toBe('1,2,3,4,5');
     });
 
-    it('aggregate', () => {
+    test('aggregate', () => {
         const sentence = 'the quick brown fox jumps over the lazy dog';
         const reversed = 'dog lazy the over jumps fox brown quick the ';
         const words: List<string> = new List(sentence.split(' '));
@@ -49,7 +49,7 @@ describe('List class', () => {
             `${next} ${workingSentence}`, '')).toEqual(reversed);
     });
 
-    it('all', () => {
+    test('all', () => {
         const pets: List<Pet> = new List([
             { age: 10, name: 'Barley' },
             { age: 4, name: 'Boots' },
@@ -59,7 +59,7 @@ describe('List class', () => {
         expect(pets.all(pet => pet.name.startsWith('B'))).toBe(false);
     });
 
-    it('any', () => {
+    test('any', () => {
         const pets: List<Pet> = new List([
             { age: 10, name: 'Barley', vaccinated: true },
             { age: 4, name: 'Boots', vaccinated: false },
@@ -67,6 +67,17 @@ describe('List class', () => {
         ]);
         // determine whether any pets over age 1 are also unvaccinated.
         expect(pets.any(pet => pet.age > 1 && !pet.vaccinated)).toBe(true);
+    });
+
+    test('average', () => {
+        const grades: List<number> = new List([78, 92, 100, 37, 81]);
+        const people: List<Person> = new List([
+            { age: 15, name: 'Cathy' },
+            { age: 25, name: 'Alice' },
+            { age: 50, name: 'Bob' }
+        ]);
+        expect(grades.average()).toEqual(77.6);
+        expect(people.average(x => x.age)).toEqual(30);
     });
 
 });
