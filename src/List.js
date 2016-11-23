@@ -224,7 +224,7 @@ class List<T> {
     /**
      * Returns the last element of a sequence.
      */
-    last(predicate?: (value?: T, index?: number, list?: T[]) => boolean): T {
+    last(predicate?: (value: T, index?: number, list?: T[]) => boolean): T {
         return predicate ?
             this.where(predicate).last() :
             this._elements[this.count() - 1];

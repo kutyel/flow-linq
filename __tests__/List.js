@@ -288,31 +288,31 @@ describe('List class', () => {
         ).toEqual(result);
     });
 
-    // test('Last', () => {
-    //     t.is(new List<string>(['hey', 'hola', 'que', 'tal']).Last(), 'tal');
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).Last(x => x > 2), 5);
-    //     t.falsy(new List<string>().Last());
-    // });
+    test('last', () => {
+        expect(new List(['what', 'is', 'up']).last()).toBe('up');
+        expect(new List([1, 2, 3, 4, 5]).last(x => x > 2)).toBe(5);
+        expect(new List().last()).toThrowError();
+    });
 
-    // test('LastOrDefault', () => {
-    //     t.is(new List<string>(['hey', 'hola', 'que', 'tal']).LastOrDefault(), 'tal');
-    //     t.is(new List<string>().LastOrDefault(), undefined);
-    // });
+    test('lastOrDefault', () => {
+        expect(new List(['what', 'is', 'up']).lastOrDefault()).toBe('up');
+        expect(new List().lastOrDefault()).toBeUndefined();
+    });
 
     // test('Max', () => {
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).Max(), 5);
+    //     expect(new List<number>([1, 2, 3, 4, 5]).Max(), 5);
     // });
 
     // test('Min', () => {
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).Min(), 1);
+    //     expect(new List<number>([1, 2, 3, 4, 5]).Min(), 1);
     // });
 
     // test('OrderBy', () => {
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).OrderBy(x => x).toArray(), '1,2,3,4,5,6');
+    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).OrderBy(x => x).toArray(), '1,2,3,4,5,6');
     // });
 
     // test('OrderByDescending', () => {
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).OrderByDescending(x => x).toArray(), '6,5,4,3,2,1');
+    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).OrderByDescending(x => x).toArray(), '6,5,4,3,2,1');
     // });
 
     // test('ThenBy', () => {
@@ -321,10 +321,10 @@ describe('List class', () => {
     //     // sort the strings first by their length and then
     //     // alphabetically by passing the identity selector function.
     //     const result = 'apple,grape,mango,banana,orange,blueberry,raspberry,passionfruit';
-    //     t.is(fruits.OrderBy(fruit => fruit.length).ThenBy(fruit => fruit).toArray(), result);
+    //     expect(fruits.OrderBy(fruit => fruit.length).ThenBy(fruit => fruit).toArray(), result);
 
     //     // test omission of OrderBy
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).ThenBy(x => x).toArray(), '1,2,3,4,5,6');
+    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).ThenBy(x => x).toArray(), '1,2,3,4,5,6');
     // });
 
     // // see https://github.com/kutyel/linq.ts/issues/23
@@ -338,9 +338,9 @@ describe('List class', () => {
     //         .ThenBy(u => u.c)
     //         .ToArray();
 
-    //     t.is(sorted[0], z);
-    //     t.is(sorted[1], y);
-    //     t.is(sorted[2], x);
+    //     expect(sorted[0], z);
+    //     expect(sorted[1], y);
+    //     expect(sorted[2], x);
     // });
 
     // test('ThenByDescending', () => {
@@ -349,8 +349,8 @@ describe('List class', () => {
     //     // sort the strings first by their length and then
     //     // alphabetically descending by passing the identity selector function.
     //     const result = 'mango,grape,apple,orange,banana,raspberry,blueberry,passionfruit';
-    //     t.is(fruits.OrderBy(fruit => fruit.length).ThenByDescending(fruit => fruit).toArray(), result);
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).ThenByDescending(x => x).toArray(), '6,5,4,3,2,1');
+    //     expect(fruits.OrderBy(fruit => fruit.length).ThenByDescending(fruit => fruit).toArray(), result);
+    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).ThenByDescending(x => x).toArray(), '6,5,4,3,2,1');
     // });
 
     // test('Remove', () => {
@@ -415,11 +415,11 @@ describe('List class', () => {
     // });
 
     // test('Reverse', () => {
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).Reverse().toArray(), '5,4,3,2,1');
+    //     expect(new List<number>([1, 2, 3, 4, 5]).Reverse().toArray(), '5,4,3,2,1');
     // });
 
     // test('Select', () => {
-    //     t.is(new List<number>([1, 2, 3]).Select(x => x * 2).toArray(), '2,4,6');
+    //     expect(new List<number>([1, 2, 3]).Select(x => x * 2).toArray(), '2,4,6');
     // });
 
     // test('SelectMany', () => {
@@ -429,7 +429,7 @@ describe('List class', () => {
     //         new PetOwner('Price, Vernette', new List<Pet>([new Pet({ Name: 'Scratches' }), new Pet({ Name: 'Diesel' })]))
     //     ]);
     //     const result = 'Scruffy,Sam,Walker,Sugar,Scratches,Diesel';
-    //     t.is(petOwners.SelectMany(petOwner => petOwner.Pets).Select(pet => pet.Name).toArray(), result);
+    //     expect(petOwners.SelectMany(petOwner => petOwner.Pets).Select(pet => pet.Name).toArray(), result);
     // });
 
     // test('SequenceEqual', () => {
@@ -449,7 +449,7 @@ describe('List class', () => {
     //     const fruits1 = new List<string>();
     //     const fruits2 = new List<string>(['orange']);
     //     const fruits3 = new List<string>(['orange', 'apple']);
-    //     t.is(fruits2.Single(), 'orange');
+    //     expect(fruits2.Single(), 'orange');
     //     t.throws(() => fruits1.Single(), /The collection does not contain exactly one element./);
     //     t.throws(() => fruits3.Single(), /The collection does not contain exactly one element./);
     // });
@@ -458,19 +458,19 @@ describe('List class', () => {
     //     const fruits1 = new List<string>();
     //     const fruits2 = new List<string>(['orange']);
     //     const fruits3 = new List<string>(['orange', 'apple']);
-    //     t.is(fruits1.SingleOrDefault(), undefined);
-    //     t.is(fruits2.SingleOrDefault(), 'orange');
+    //     expect(fruits1.SingleOrDefault(), undefined);
+    //     expect(fruits2.SingleOrDefault(), 'orange');
     //     t.throws(() => fruits3.SingleOrDefault(), /The collection does not contain exactly one element./);
     // });
 
     // test('Skip', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     t.is(grades.OrderByDescending(x => x).Skip(3).toArray(), '82,70,59,56');
+    //     expect(grades.OrderByDescending(x => x).Skip(3).toArray(), '82,70,59,56');
     // });
 
     // test('SkipWhile', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     t.is(grades.OrderByDescending(x => x).SkipWhile(grade => grade >= 80).toArray(), '70,59,56');
+    //     expect(grades.OrderByDescending(x => x).SkipWhile(grade => grade >= 80).toArray(), '70,59,56');
     // });
 
     // test('Sum', () => {
@@ -479,22 +479,22 @@ describe('List class', () => {
     //         { Age: 25, Name: 'Alice' },
     //         { Age: 50, Name: 'Bob' }
     //     ]);
-    //     t.is(new List<number>([2, 3, 5]).Sum(), 10);
-    //     t.is(people.Sum(x => x.Age), 90);
+    //     expect(new List<number>([2, 3, 5]).Sum(), 10);
+    //     expect(people.Sum(x => x.Age), 90);
     // });
 
     // test('Take', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     t.is(grades.OrderByDescending(x => x).Take(3).toArray(), '98,92,85');
+    //     expect(grades.OrderByDescending(x => x).Take(3).toArray(), '98,92,85');
     // });
 
     // test('TakeWhile', () => {
     //     const fruits = new List<string>(['apple', 'banana', 'mango', 'orange', 'passionfruit', 'grape']);
-    //     t.is(fruits.TakeWhile(fruit => fruit !== 'orange').toArray(), 'apple,banana,mango');
+    //     expect(fruits.TakeWhile(fruit => fruit !== 'orange').toArray(), 'apple,banana,mango');
     // });
 
     // test('ToArray', () => {
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).toArray(), '1,2,3,4,5');
+    //     expect(new List<number>([1, 2, 3, 4, 5]).toArray(), '1,2,3,4,5');
     // });
 
     // test('ToDictionary', () => {
@@ -506,7 +506,7 @@ describe('List class', () => {
     //     const dictionary = people.ToDictionary(x => x.Name);
     //     t.deepEqual(dictionary['Bob'], { Age: 50, Name: 'Bob' });
     //     const dictionary2 = people.ToDictionary(x => x.Name, y => y.Age);
-    //     t.is(dictionary2['Alice'], 25);
+    //     expect(dictionary2['Alice'], 25);
     // });
 
     test('toList', () => {
