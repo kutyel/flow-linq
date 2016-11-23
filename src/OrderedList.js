@@ -1,7 +1,7 @@
 // @flow
 
 import List from './List';
-import { comparerForKey, composeComparers } from './ComparerFunctions';
+import { comparerForKey, composeComparers } from './helpers';
 
 /**
  * Represents a sorted sequence. The methods of this class are implemented by
