@@ -8,9 +8,18 @@
  * @param descending
  * @returns {number}
  */
-export function compare<T>(a: T, b: T, _keySelector: (key: T) => any, descending?: boolean): number {
-    return _keySelector(a) > _keySelector(b) ? !descending ? 1 : -1 :
-        _keySelector(a) < _keySelector(b) ?!descending ? -1 : 1 : 0;
+export function compare<T>(
+    a: T,
+    b: T,
+    _keySelector: (key: T) => any, descending?: boolean
+): number {
+    if (_keySelector(a) > _keySelector(b)) {
+        return !descending ? 1 : -1;
+    } else if (_keySelector(a) < _keySelector(b)) {
+        return !descending ? -1 : 1;
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -19,7 +28,10 @@ export function compare<T>(a: T, b: T, _keySelector: (key: T) => any, descending
  * @param descending
  * @returns {function(T=, T=): number}
  */
-export function comparerForKey<T>(_keySelector: (key: T) => any, descending?: boolean): (a: T, b: T) => number {
+export function comparerForKey<T>(
+    _keySelector: (key: T) => any,
+    descending?: boolean
+): (a: T, b: T) => number {
     return (a: T, b: T) => compare(a, b, _keySelector, descending);
 }
 
