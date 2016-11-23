@@ -139,34 +139,34 @@ describe('List class', () => {
         expect(pets2.defaultIfEmpty(defaultPet).first()).toEqual(defaultPet);
     });
 
-    // test('Distinct', () => {
-    //     const ages = new List<number>([21, 46, 46, 55, 17, 21, 55, 55]);
-    //     t.is(ages.Distinct().toArray(), '21,46,55,17');
-    // });
+    test('distinct', () => {
+        const ages: List<number> = new List([21, 46, 46, 55, 17, 21, 55, 55]);
+        expect(ages.distinct().toArray()).toEqual([21, 46, 55, 17]);
+    });
 
-    // test('ElementAt', () => {
-    //     const a = new List<string>(['hey', 'hola', 'que', 'tal']);
-    //     t.is(a.ElementAt(0), 'hey');
-    //     t.falsy(a.ElementAt(4));
-    // });
+    test('elementAt', () => {
+        const names: List<string> = new List(['Hartono', 'Adams', 'Andersen']);
+        expect(names.elementAt(0)).toBe('Hartono');
+        expect(names.elementAt(3)).toThrowError();
+    });
 
-    // test('ElementAtOrDefault', () => {
-    //     const a = new List<string>(['hey', 'hola', 'que', 'tal']);
-    //     t.is(a.ElementAtOrDefault(0), 'hey');
-    //     t.is(a.ElementAtOrDefault(4), undefined);
-    // });
+    test('elementAtOrDefault', () => {
+        const names: List<string> = new List(['Hartono', 'Adams', 'Andersen']);
+        expect(names.elementAtOrDefault(0)).toBe('Hartono');
+        expect(names.elementAtOrDefault(3)).toBeUndefined();
+    });
 
-    // test('Except', () => {
-    //     const numbers1 = new List<number>([2.0, 2.1, 2.2, 2.3, 2.4, 2.5]);
-    //     const numbers2 = new List<number>([2.2, 2.3]);
-    //     t.is(numbers1.Except(numbers2).toArray(), '2,2.1,2.4,2.5');
-    // });
+    test('except', () => {
+        const numbers: List<number> = new List([2.0, 2.1, 2.2, 2.3, 2.4, 2.5]);
+        const numbers2: List<number> = new List([2.2, 2.3]);
+        expect(numbers.except(numbers2).toArray()).toEqual([2, 2.1, 2.4, 2.5]);
+    });
 
-    // test('First', () => {
-    //     t.is(new List<string>(['hey', 'hola', 'que', 'tal']).First(), 'hey');
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).First(x => x > 2), 3);
-    //     t.falsy(new List<string>().First());
-    // });
+    test('first', () => {
+        expect(new List(['hey', 'what', 'is', 'up']).first()).toBe('hey');
+        expect(new List([1, 2, 3, 4, 5]).first(x => x > 2)).toBe(3);
+        expect(new List().first()).toBeUndefined();
+    });
 
     // test('FirstOrDefault', () => {
     //     t.is(new List<string>(['hey', 'hola', 'que', 'tal']).FirstOrDefault(), 'hey');

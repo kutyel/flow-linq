@@ -145,7 +145,7 @@ class List<T> {
     /**
      * Returns the first element of a sequence.
      */
-    first(predicate?: (value?: T, index?: number, list?: T[]) => boolean): T {
+    first(predicate?: (value: T, index?: number, list?: T[]) => boolean): T {
         return predicate ? this.where(predicate).first() : this._elements[0];
     }
 
