@@ -229,46 +229,64 @@ describe('List class', () => {
         ).toEqual(result);
     });
 
-    // test('IndexOf', () => {
-    //     const fruits = new List<string>(['apple', 'banana', 'mango', 'orange', 'passionfruit', 'grape']);
+    test('indexOf', () => {
+        const fruits: List<string> = new List([
+            'apple',
+            'banana',
+            'mango',
+            'orange',
+            'passionfruit',
+            'grape'
+        ]);
+        const barley: Pet = { age: 8, name: 'Barley', vaccinated: true };
+        const boots: Pet = { age: 4, name: 'Boots', vaccinated: false };
+        const whiskers: Pet = { age: 1, name: 'Whiskers', vaccinated: false };
+        const pets: List<Pet> = new List([barley, boots, whiskers]);
 
-    //     const barley = new Pet({ Age: 8, Name: 'Barley', Vaccinated: true });
-    //     const boots = new Pet({ Age: 4, Name: 'Boots', Vaccinated: false });
-    //     const whiskers = new Pet({ Age: 1, Name: 'Whiskers', Vaccinated: false });
-    //     const pets = new List<Pet>([barley, boots, whiskers]);
+        expect(fruits.indexOf('orange')).toBe(3);
+        expect(fruits.indexOf('strawberry')).toBe(-1);
+        expect(pets.indexOf(boots)).toBe(1);
+    });
 
-    //     t.is(fruits.IndexOf('orange'), 3);
-    //     t.is(fruits.IndexOf('strawberry'), -1);
-    //     t.is(pets.IndexOf(boots), 1);
-    // });
+    test('intersect', () => {
+        const id1: List<number> = new List([44, 26, 92, 30, 71, 38]);
+        const id2: List<number> = new List([39, 59, 83, 47, 26, 4, 30]);
+        expect(id1.intersect(id2).toArray()).toEqual([26, 30]);
+    });
 
-    // test('Intersect', () => {
-    //     const id1 = new List<number>([44, 26, 92, 30, 71, 38]);
-    //     const id2 = new List<number>([39, 59, 83, 47, 26, 4, 30]);
-    //     t.is(id1.Intersect(id2).Sum(x => x), 56);
-    // });
+    test('join', () => {
+        const magnus: Person = { name: 'Hedlund, Magnus' };
+        const terry: Person = { name: 'Adams, Terry' };
+        const charlotte: Person = { name: 'Weiss, Charlotte' };
 
-    // test('Join', () => {
-    //     const magnus = new Person({ Name: 'Hedlund, Magnus' });
-    //     const terry = new Person({ Name: 'Adams, Terry' });
-    //     const charlotte = new Person({ Name: 'Weiss, Charlotte' });
+        const barley: Pet = { name: 'Barley', owner: terry };
+        const boots: Pet = { name: 'Boots', owner: terry };
+        const whiskers: Pet = { name: 'Whiskers', owner: charlotte };
+        const daisy: Pet = { name: 'Daisy', owner: magnus };
 
-    //     const barley = new Pet({ Name: 'Barley', Owner: terry });
-    //     const boots = new Pet({ Name: 'Boots', Owner: terry });
-    //     const whiskers = new Pet({ Name: 'Whiskers', Owner: charlotte });
-    //     const daisy = new Pet({ Name: 'Daisy', Owner: magnus });
+        const people: List<Person> = new List([magnus, terry, charlotte]);
+        const pets: List<Pet> = new List([barley, boots, whiskers, daisy]);
 
-    //     const people = new List<Person>([magnus, terry, charlotte]);
-    //     const pets = new List<Pet>([barley, boots, whiskers, daisy]);
-
-    //     // create a list of Person-Pet pairs where
-    //     // each element is an anonymous type that contains a
-    //     // pet's name and the name of the Person that owns the Pet.
-    //     const query = people.Join(pets, person => person, pet => pet.Owner, (person, pet) =>
-    //         ({ OwnerName: person.Name, Pet: pet.Name }));
-    //     const result = 'Hedlund, Magnus - Daisy,Adams, Terry - Barley,Adams, Terry - Boots,Weiss, Charlotte - Whiskers';
-    //     t.is(query.Select(obj => `${obj.OwnerName} - ${obj.Pet}`).toArray(), result);
-    // });
+        // create a list of Person-Pet pairs where
+        // each element is an anonymous type that contains a
+        // pet's name and the name of the Person that owns the Pet.
+        const query = people.join(
+            pets,
+            person => person,
+            pet => pet.owner,
+            (person, pet) =>
+                ({ ownerName: person.name, pet: pet.name })
+        );
+        const result = [
+            'Hedlund, Magnus - Daisy',
+            'Adams, Terry - Barley',
+            'Adams, Terry - Boots',
+            'Weiss, Charlotte - Whiskers'
+        ];
+        expect(
+            query.select(obj => `${obj.ownerName} - ${obj.pet}`).toArray()
+        ).toEqual(result);
+    });
 
     // test('Last', () => {
     //     t.is(new List<string>(['hey', 'hola', 'que', 'tal']).Last(), 'tal');
