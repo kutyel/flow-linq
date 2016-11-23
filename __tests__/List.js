@@ -32,7 +32,7 @@ describe('List class', () => {
     test('addRange', () => {
         const list: List<number> = new List();
         list.addRange([1, 2, 3, 4, 5]);
-        expect(list.toArray().toString()).toBe('1,2,3,4,5');
+        expect(list.toArray()).toEqual([1, 2, 3, 4, 5]);
     });
 
     test('aggregate', () => {
@@ -86,10 +86,16 @@ describe('List class', () => {
             { age: 14, name: 'Snoopy' },
             { age: 9, name: 'Fido' }
         ]);
-        const result = 'Barley,Boots,Whiskers,Bounder,Snoopy,Fido';
         expect(cats.select(cat => cat.name)
-            .concat(dogs.select(dog => dog.name)).toArray().toString())
-            .toBe(result);
+            .concat(dogs.select(dog => dog.name)).toArray())
+            .toEqual([
+                'Barley',
+                'Boots',
+                'Whiskers',
+                'Bounder',
+                'Snoopy',
+                'Fido'
+            ]);
     });
 
     test('contains', () => {
@@ -101,7 +107,7 @@ describe('List class', () => {
             'passionfruit',
             'grape'
         ]);
-        expect(fruits.contains('mango')).toBeTruthy();
+        expect(fruits.contains('mango')).toBe(true);
     });
 
     test('count', () => {
@@ -117,20 +123,25 @@ describe('List class', () => {
         expect(fruits.count(x => x.length > 5)).toBe(3);
     });
 
-    // test('DefaultIfEmpty', () => {
-    //     const pets = new List<Pet>([
-    //         new Pet({ Age: 8, Name: 'Barley' }),
-    //         new Pet({ Age: 4, Name: 'Boots' }),
-    //         new Pet({ Age: 1, Name: 'Whiskers' })
-    //     ]);
-    //     t.is(pets.DefaultIfEmpty().Select(pet => pet.Name).ToArray().toString(), 'Barley,Boots,Whiskers');
-    //     const numbers = new List<number>();
-    //     t.is(numbers.DefaultIfEmpty(0).ToArray().toString(), '0');
-    // });
+    test('defaultIfEmpty', () => {
+        const defaultPet: Pet = { age: 0, name: 'Default Pet' };
+        const pets: List<Pet> = new List([
+            { age: 8, name: 'Barley' },
+            { age: 4, name: 'Boots' },
+            { age: 1, name: 'Whiskers' }
+        ]);
+        expect(pets
+            .defaultIfEmpty(defaultPet)
+            .select(pet => pet.name)
+            .toArray()
+        ).toEqual(['Barley', 'Boots', 'Whiskers']);
+        const pets2: List<Pet> = new List();
+        expect(pets2.defaultIfEmpty(defaultPet).first()).toEqual(defaultPet);
+    });
 
     // test('Distinct', () => {
     //     const ages = new List<number>([21, 46, 46, 55, 17, 21, 55, 55]);
-    //     t.is(ages.Distinct().ToArray().toString(), '21,46,55,17');
+    //     t.is(ages.Distinct().toArray(), '21,46,55,17');
     // });
 
     // test('ElementAt', () => {
@@ -148,7 +159,7 @@ describe('List class', () => {
     // test('Except', () => {
     //     const numbers1 = new List<number>([2.0, 2.1, 2.2, 2.3, 2.4, 2.5]);
     //     const numbers2 = new List<number>([2.2, 2.3]);
-    //     t.is(numbers1.Except(numbers2).ToArray().toString(), '2,2.1,2.4,2.5');
+    //     t.is(numbers1.Except(numbers2).toArray(), '2,2.1,2.4,2.5');
     // });
 
     // test('First', () => {
@@ -203,7 +214,7 @@ describe('List class', () => {
     //     const query = people.GroupJoin(pets, person => person, pet => pet.Owner, (person, petCollection) =>
     //         ({ OwnerName: person.Name, Pets: petCollection.Select(pet => pet.Name) }));
     //     const result = 'Hedlund, Magnus: Daisy,Adams, Terry: Barley,Boots,Weiss, Charlotte: Whiskers';
-    //     t.is(query.Select(obj => `${obj.OwnerName}: ${obj.Pets.ToArray()}`).ToArray().toString(), result);
+    //     t.is(query.Select(obj => `${obj.OwnerName}: ${obj.Pets.ToArray()}`).toArray(), result);
     // });
 
     // test('IndexOf', () => {
@@ -244,7 +255,7 @@ describe('List class', () => {
     //     const query = people.Join(pets, person => person, pet => pet.Owner, (person, pet) =>
     //         ({ OwnerName: person.Name, Pet: pet.Name }));
     //     const result = 'Hedlund, Magnus - Daisy,Adams, Terry - Barley,Adams, Terry - Boots,Weiss, Charlotte - Whiskers';
-    //     t.is(query.Select(obj => `${obj.OwnerName} - ${obj.Pet}`).ToArray().toString(), result);
+    //     t.is(query.Select(obj => `${obj.OwnerName} - ${obj.Pet}`).toArray(), result);
     // });
 
     // test('Last', () => {
@@ -267,11 +278,11 @@ describe('List class', () => {
     // });
 
     // test('OrderBy', () => {
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).OrderBy(x => x).ToArray().toString(), '1,2,3,4,5,6');
+    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).OrderBy(x => x).toArray(), '1,2,3,4,5,6');
     // });
 
     // test('OrderByDescending', () => {
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).OrderByDescending(x => x).ToArray().toString(), '6,5,4,3,2,1');
+    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).OrderByDescending(x => x).toArray(), '6,5,4,3,2,1');
     // });
 
     // test('ThenBy', () => {
@@ -280,10 +291,10 @@ describe('List class', () => {
     //     // sort the strings first by their length and then
     //     // alphabetically by passing the identity selector function.
     //     const result = 'apple,grape,mango,banana,orange,blueberry,raspberry,passionfruit';
-    //     t.is(fruits.OrderBy(fruit => fruit.length).ThenBy(fruit => fruit).ToArray().toString(), result);
+    //     t.is(fruits.OrderBy(fruit => fruit.length).ThenBy(fruit => fruit).toArray(), result);
 
     //     // test omission of OrderBy
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).ThenBy(x => x).ToArray().toString(), '1,2,3,4,5,6');
+    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).ThenBy(x => x).toArray(), '1,2,3,4,5,6');
     // });
 
     // // see https://github.com/kutyel/linq.ts/issues/23
@@ -308,8 +319,8 @@ describe('List class', () => {
     //     // sort the strings first by their length and then
     //     // alphabetically descending by passing the identity selector function.
     //     const result = 'mango,grape,apple,orange,banana,raspberry,blueberry,passionfruit';
-    //     t.is(fruits.OrderBy(fruit => fruit.length).ThenByDescending(fruit => fruit).ToArray().toString(), result);
-    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).ThenByDescending(x => x).ToArray().toString(), '6,5,4,3,2,1');
+    //     t.is(fruits.OrderBy(fruit => fruit.length).ThenByDescending(fruit => fruit).toArray(), result);
+    //     t.is(new List<number>([4, 5, 6, 3, 2, 1]).ThenByDescending(x => x).toArray(), '6,5,4,3,2,1');
     // });
 
     // test('Remove', () => {
@@ -374,11 +385,11 @@ describe('List class', () => {
     // });
 
     // test('Reverse', () => {
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).Reverse().ToArray().toString(), '5,4,3,2,1');
+    //     t.is(new List<number>([1, 2, 3, 4, 5]).Reverse().toArray(), '5,4,3,2,1');
     // });
 
     // test('Select', () => {
-    //     t.is(new List<number>([1, 2, 3]).Select(x => x * 2).ToArray().toString(), '2,4,6');
+    //     t.is(new List<number>([1, 2, 3]).Select(x => x * 2).toArray(), '2,4,6');
     // });
 
     // test('SelectMany', () => {
@@ -388,7 +399,7 @@ describe('List class', () => {
     //         new PetOwner('Price, Vernette', new List<Pet>([new Pet({ Name: 'Scratches' }), new Pet({ Name: 'Diesel' })]))
     //     ]);
     //     const result = 'Scruffy,Sam,Walker,Sugar,Scratches,Diesel';
-    //     t.is(petOwners.SelectMany(petOwner => petOwner.Pets).Select(pet => pet.Name).ToArray().toString(), result);
+    //     t.is(petOwners.SelectMany(petOwner => petOwner.Pets).Select(pet => pet.Name).toArray(), result);
     // });
 
     // test('SequenceEqual', () => {
@@ -424,12 +435,12 @@ describe('List class', () => {
 
     // test('Skip', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     t.is(grades.OrderByDescending(x => x).Skip(3).ToArray().toString(), '82,70,59,56');
+    //     t.is(grades.OrderByDescending(x => x).Skip(3).toArray(), '82,70,59,56');
     // });
 
     // test('SkipWhile', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     t.is(grades.OrderByDescending(x => x).SkipWhile(grade => grade >= 80).ToArray().toString(), '70,59,56');
+    //     t.is(grades.OrderByDescending(x => x).SkipWhile(grade => grade >= 80).toArray(), '70,59,56');
     // });
 
     // test('Sum', () => {
@@ -444,16 +455,16 @@ describe('List class', () => {
 
     // test('Take', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     t.is(grades.OrderByDescending(x => x).Take(3).ToArray().toString(), '98,92,85');
+    //     t.is(grades.OrderByDescending(x => x).Take(3).toArray(), '98,92,85');
     // });
 
     // test('TakeWhile', () => {
     //     const fruits = new List<string>(['apple', 'banana', 'mango', 'orange', 'passionfruit', 'grape']);
-    //     t.is(fruits.TakeWhile(fruit => fruit !== 'orange').ToArray().toString(), 'apple,banana,mango');
+    //     t.is(fruits.TakeWhile(fruit => fruit !== 'orange').toArray(), 'apple,banana,mango');
     // });
 
     // test('ToArray', () => {
-    //     t.is(new List<number>([1, 2, 3, 4, 5]).ToArray().toString(), '1,2,3,4,5');
+    //     t.is(new List<number>([1, 2, 3, 4, 5]).toArray(), '1,2,3,4,5');
     // });
 
     // test('ToDictionary', () => {
@@ -468,9 +479,9 @@ describe('List class', () => {
     //     t.is(dictionary2['Alice'], 25);
     // });
 
-    // test('ToList', () => {
-    //     t.is(new List<number>([1, 2, 3]).ToList().ToArray().toString(), '1,2,3');
-    // });
+    test('toList', () => {
+        expect(new List([1, 2, 3]).toList().toArray()).toEqual([1, 2, 3]);
+    });
 
     test('toLookup', () => {
         // create a list of Packages
@@ -526,17 +537,16 @@ describe('List class', () => {
     });
 
     test('union', () => {
-        const expected = '5,3,9,7,8,6,4,1,0';
+        const expected = [5, 3, 9, 7, 8, 6, 4, 1, 0];
         const ints1: List<number> = new List([5, 3, 9, 7, 5, 9, 3, 7]);
         const ints2: List<number> = new List([8, 3, 6, 4, 4, 9, 1, 0]);
-        expect(ints1.union(ints2).toArray().toString()).toBe(expected);
+        expect(ints1.union(ints2).toArray()).toEqual(expected);
 
         // TODO: give default equality comparer for objects
         // expect(store1.union(store2).toArray()).toEqual(result);
     });
 
     test('where', () => {
-        const result = 'apple,mango,grape';
         const fruits: List<string> = new List([
             'apple',
             'passionfruit',
@@ -547,34 +557,36 @@ describe('List class', () => {
             'grape',
             'strawberry'
         ]);
-        expect(fruits.where(fruit => fruit.length < 6).toArray().toString())
-            .toBe(result);
+        expect(fruits.where(fruit => fruit.length < 6).toArray())
+            .toEqual(['apple', 'mango', 'grape']);
     });
 
-    // test('zip', () => {
-    //     const numbers: List<number> = new List([1, 2, 3, 4]);
-    //     const words: List<string> = new List(['one', 'two', 'three']);
-    //     t.is(numbers.Zip(words, (first, second) => `${first} ${second}`).ToArray().toString(), '1 one,2 two,3 three');
+    test('zip', () => {
+        const numbers: List<number> = new List([1, 2, 3, 4]);
+        const words: List<string> = new List(['one', 'two', 'three']);
+        expect(numbers
+            .zip(words, (first, second) => `${first} ${second}`).toArray()
+        ).toEqual(['1 one', '2 two', '3 three']);
 
-    //     // larger second array
-    //     const numbers2: List<number> = new List([1, 2, 3, 4]);
-    //     const words2: List<string> = new List(['one', 'two', 'three']);
-    //     t.is(words2.Zip(numbers2, (first, second) => `${first} ${second}`).ToArray().toString(), 'one 1,two 2,three 3');
-    // });
+        // larger second array
+        const numbers2: List<number> = new List([1, 2, 3, 4]);
+        const words2: List<string> = new List(['one', 'two', 'three']);
+        expect(words2
+            .zip(numbers2, (first, second) => `${first} ${second}`).toArray()
+        ).toEqual(['one 1', 'two 2', 'three 3']);
+    });
 
     test('where().select()', () => {
         expect(new List([1, 2, 3, 4, 5])
             .where(x => x > 3)
             .select(y => y * 2)
             .toArray()
-            .toString()
-        ).toBe('8,10');
+        ).toEqual([8, 10]);
         expect(new List([1, 2, 3, 4, 5])
             .where(x => x > 3)
             .select(y => y + 'a')
             .toArray()
-            .toString()
-        ).toBe('4a,5a');
+        ).toEqual(['4a', '5a']);
     });
 
 });
