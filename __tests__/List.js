@@ -15,7 +15,7 @@ type Person = {
 
 type Pet = {
     name: string;
-    age: number;
+    age?: number;
     owner?: Person;
     vaccinated?: boolean;
 };
@@ -61,7 +61,9 @@ describe('List class', () => {
             { age: 6, name: 'Whiskers', vaccinated: false }
         ]);
         // determine whether any pets over age 1 are also unvaccinated.
-        expect(pets.any(pet => pet.age > 1 && !pet.vaccinated)).toBe(true);
+        expect(
+            pets.any(pet => !!pet.age && pet.age > 1 && !pet.vaccinated)
+        ).toBe(true);
     });
 
     test('average', () => {
@@ -193,27 +195,39 @@ describe('List class', () => {
         expect(pets.groupBy(pet => pet.age, pet => pet.name)).toEqual(result);
     });
 
-    // test('GroupJoin', () => {
-    //     const magnus = new Person({ Name: 'Hedlund, Magnus' });
-    //     const terry = new Person({ Name: 'Adams, Terry' });
-    //     const charlotte = new Person({ Name: 'Weiss, Charlotte' });
+    test('groupJoin', () => {
+        const magnus: Person = { name: 'Hedlund, Magnus' };
+        const terry: Person = { name: 'Adams, Terry' };
+        const charlotte: Person = { name: 'Weiss, Charlotte' };
 
-    //     const barley = new Pet({ Name: 'Barley', Owner: terry });
-    //     const boots = new Pet({ Name: 'Boots', Owner: terry });
-    //     const whiskers = new Pet({ Name: 'Whiskers', Owner: charlotte });
-    //     const daisy = new Pet({ Name: 'Daisy', Owner: magnus });
+        const barley: Pet = { name: 'Barley', owner: terry };
+        const boots: Pet = { name: 'Boots', owner: terry };
+        const whiskers: Pet = { name: 'Whiskers', owner: charlotte };
+        const daisy: Pet = { name: 'Daisy', owner: magnus };
 
-    //     const people = new List<Person>([magnus, terry, charlotte]);
-    //     const pets = new List<Pet>([barley, boots, whiskers, daisy]);
+        const people: List<Person> = new List([magnus, terry, charlotte]);
+        const pets: List<Pet> = new List([barley, boots, whiskers, daisy]);
 
-    //     // create a list where each element is an anonymous
-    //     // type that contains a person's name and
-    //     // a collection of names of the pets they own.
-    //     const query = people.GroupJoin(pets, person => person, pet => pet.Owner, (person, petCollection) =>
-    //         ({ OwnerName: person.Name, Pets: petCollection.Select(pet => pet.Name) }));
-    //     const result = 'Hedlund, Magnus: Daisy,Adams, Terry: Barley,Boots,Weiss, Charlotte: Whiskers';
-    //     t.is(query.Select(obj => `${obj.OwnerName}: ${obj.Pets.ToArray()}`).toArray(), result);
-    // });
+        // create a list where each element is an anonymous
+        // type that contains a person's name and
+        // a collection of names of the pets they own.
+        const query = people.groupJoin(
+            pets, person => person,
+            pet => pet.owner,
+            (person, petCollection) => ({
+                ownerName: person.name,
+                pets: petCollection.select(pet => pet.name)
+            })
+        );
+        const result = [
+            'Hedlund, Magnus: Daisy',
+            'Adams, Terry: Barley,Boots',
+            'Weiss, Charlotte: Whiskers'
+        ];
+        expect(query
+            .select(obj => `${obj.ownerName}: ${obj.pets.toArray()}`).toArray()
+        ).toEqual(result);
+    });
 
     // test('IndexOf', () => {
     //     const fruits = new List<string>(['apple', 'banana', 'mango', 'orange', 'passionfruit', 'grape']);
