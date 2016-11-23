@@ -162,7 +162,7 @@ class List<T> {
     /**
      * Performs the specified action on each element of the List<T>.
      */
-    forEach(action: (value?: T, index?: number, list?: T[]) => void): void {
+    forEach(action: (value: T, index: number, list: T[]) => void): void {
         return this._elements.forEach(action);
     }
 

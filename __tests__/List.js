@@ -163,37 +163,35 @@ describe('List class', () => {
     });
 
     test('first', () => {
-        expect(new List(['hey', 'what', 'is', 'up']).first()).toBe('hey');
+        expect(new List(['hey', 'whats', 'is', 'up']).first()).toBe('hey');
         expect(new List([1, 2, 3, 4, 5]).first(x => x > 2)).toBe(3);
         expect(new List().first()).toBeUndefined();
     });
 
-    // test('FirstOrDefault', () => {
-    //     t.is(new List<string>(['hey', 'hola', 'que', 'tal']).FirstOrDefault(), 'hey');
-    //     t.is(new List<string>().FirstOrDefault(), undefined);
-    // });
+    test('firstOrDefault', () => {
+        expect(new List([1, 2, 3, 4, 5]).firstOrDefault()).toBe(1);
+        expect(new List().firstOrDefault()).toBeUndefined;
+    });
 
-    // test('ForEach', () => {
-    //     const names = new List<string>(['Bruce', 'Alfred', 'Tim', 'Richard']);
-    //     let test = '';
-    //     names.ForEach((x, i) => test += `${x} ${i} `);
-    //     t.is(test, 'Bruce 0 Alfred 1 Tim 2 Richard 3 ');
-    // });
+    test('forEach', () => {
+        const names: List<string> = new List(['Bruce', 'Alfred', 'Richard']);
+        names.forEach((name, i) => expect(name).toBe(names.elementAt(i)));
+    });
 
-    // test('GroupBy', () => {
-    //     const pets = new List<Pet>([
-    //         new Pet({ Age: 8, Name: 'Barley' }),
-    //         new Pet({ Age: 4, Name: 'Boots' }),
-    //         new Pet({ Age: 1, Name: 'Whiskers' }),
-    //         new Pet({ Age: 4, Name: 'Daisy' })
-    //     ]);
-    //     const result = {
-    //         '1': ['Whiskers'],
-    //         '4': ['Boots', 'Daisy'],
-    //         '8': ['Barley'],
-    //     };
-    //     t.deepEqual(pets.GroupBy(pet => pet.Age, pet => pet.Name), result);
-    // });
+    test('groupBy', () => {
+        const pets: List<Pet> = new List([
+            { age: 8, name: 'Barley' },
+            { age: 4, name: 'Boots' },
+            { age: 1, name: 'Whiskers' },
+            { age: 4, name: 'Daisy' }
+        ]);
+        const result = {
+            '1': ['Whiskers'],
+            '4': ['Boots', 'Daisy'],
+            '8': ['Barley']
+        };
+        expect(pets.groupBy(pet => pet.age, pet => pet.name)).toEqual(result);
+    });
 
     // test('GroupJoin', () => {
     //     const magnus = new Person({ Name: 'Hedlund, Magnus' });
