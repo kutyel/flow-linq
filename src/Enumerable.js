@@ -12,7 +12,8 @@ class Enumerable {
      * @returns {List.<number>} Sequence of integers within the specified range.
      */
     static range(start: number, count: number): List<number> {
-        let result: List<number> = new List(); while (count--) { result.add(start++); } return result;
+        let result: List<number> = new List();
+        while (count--) result.add(start++); return result;
     }
 
     /**
@@ -23,7 +24,8 @@ class Enumerable {
      * @returns {List.<T>} Sequence containing repeated value.
      */
     static repeat<T>(element: T, count: number): List<T> {
-        let result: List<T> = new List(); while (count--) { result.add(element); } return result;
+        let result: List<T> = new List();
+        while (count--) result.add(element); return result;
     }
 }
 
