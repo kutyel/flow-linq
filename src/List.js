@@ -242,16 +242,18 @@ class List<T> {
 
     /**
      * Returns the maximum value in a generic sequence.
+     * @param {(value: T) => number} comp Comparator function
      */
-    max(): T {
-        return this.aggregate((x, y) => x > y ? x : y, this.first());
+    max(comp?: (value: T) => number = x => Number(x)): T {
+        return this._elements.reduce((x, y) => comp(x) > comp(y) ? x : y);
     }
 
     /**
      * Returns the minimum value in a generic sequence.
+     * @param {(value: T) => number} comp Comparator function
      */
-    min(): T {
-        return this.aggregate((x, y) => x < y ? x : y, this.first());
+    min(comp?: (value: T) => number = x => Number(x)): T {
+        return this._elements.reduce((x, y) => comp(x) < comp(y) ? x : y);
     }
 
     /**

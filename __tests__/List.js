@@ -15,7 +15,7 @@ type Person = {
 
 type Pet = {
     name: string;
-    age?: number;
+    age: number;
     owner?: Person;
     vaccinated?: boolean;
 };
@@ -200,10 +200,10 @@ describe('List class', () => {
         const terry: Person = { name: 'Adams, Terry' };
         const charlotte: Person = { name: 'Weiss, Charlotte' };
 
-        const barley: Pet = { name: 'Barley', owner: terry };
-        const boots: Pet = { name: 'Boots', owner: terry };
-        const whiskers: Pet = { name: 'Whiskers', owner: charlotte };
-        const daisy: Pet = { name: 'Daisy', owner: magnus };
+        const barley: Pet = { age: 8, name: 'Barley', owner: terry };
+        const boots: Pet = { age: 4, name: 'Boots', owner: terry };
+        const whiskers: Pet = { age: 1, name: 'Whiskers', owner: charlotte };
+        const daisy: Pet = { age: 4, name: 'Daisy', owner: magnus };
 
         const people: List<Person> = new List([magnus, terry, charlotte]);
         const pets: List<Pet> = new List([barley, boots, whiskers, daisy]);
@@ -259,10 +259,10 @@ describe('List class', () => {
         const terry: Person = { name: 'Adams, Terry' };
         const charlotte: Person = { name: 'Weiss, Charlotte' };
 
-        const barley: Pet = { name: 'Barley', owner: terry };
-        const boots: Pet = { name: 'Boots', owner: terry };
-        const whiskers: Pet = { name: 'Whiskers', owner: charlotte };
-        const daisy: Pet = { name: 'Daisy', owner: magnus };
+        const barley: Pet = { age: 8, name: 'Barley', owner: terry };
+        const boots: Pet = { age: 4, name: 'Boots', owner: terry };
+        const whiskers: Pet = { age: 1, name: 'Whiskers', owner: charlotte };
+        const daisy: Pet = { age: 4, name: 'Daisy', owner: magnus };
 
         const people: List<Person> = new List([magnus, terry, charlotte]);
         const pets: List<Pet> = new List([barley, boots, whiskers, daisy]);
@@ -299,13 +299,27 @@ describe('List class', () => {
         expect(new List().lastOrDefault()).toBeUndefined();
     });
 
-    // test('Max', () => {
-    //     expect(new List<number>([1, 2, 3, 4, 5]).Max(), 5);
-    // });
+    test('max', () => {
+        const pets: List<Pet> = new List([
+            { age: 8, name: 'Barley' },
+            { age: 4, name: 'Boots' },
+            { age: 1, name: 'Whiskers' },
+            { age: 4, name: 'Daisy' }
+        ]);
+        expect(new List([1, 2, 3, 4, 5]).max()).toBe(5);
+        expect(pets.max(pet => pet.age).name).toBe('Barley');
+    });
 
-    // test('Min', () => {
-    //     expect(new List<number>([1, 2, 3, 4, 5]).Min(), 1);
-    // });
+    test('min', () => {
+        const pets: List<Pet> = new List([
+            { age: 8, name: 'Barley' },
+            { age: 4, name: 'Boots' },
+            { age: 1, name: 'Whiskers' },
+            { age: 4, name: 'Daisy' }
+        ]);
+        expect(new List([1, 2, 3, 4, 5]).min()).toBe(1);
+        expect(pets.min(pet => pet.age).name).toBe('Whiskers');
+    });
 
     // test('OrderBy', () => {
     //     expect(new List<number>([4, 5, 6, 3, 2, 1]).OrderBy(x => x).toArray(), '1,2,3,4,5,6');
@@ -327,7 +341,6 @@ describe('List class', () => {
     //     expect(new List<number>([4, 5, 6, 3, 2, 1]).ThenBy(x => x).toArray(), '1,2,3,4,5,6');
     // });
 
-    // // see https://github.com/kutyel/linq.ts/issues/23
     // test('ThenByMultiple', () => {
     //     let x = { a: 2, b: 1, c: 1 };
     //     let y = { a: 1, b: 2, c: 2 };
