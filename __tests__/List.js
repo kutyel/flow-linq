@@ -445,18 +445,18 @@ describe('List class', () => {
     //     expect(petOwners.SelectMany(petOwner => petOwner.Pets).Select(pet => pet.Name).toArray(), result);
     // });
 
-    // test('SequenceEqual', () => {
-    //     const pet1 = new Pet({ Age: 2, Name: 'Turbo' });
-    //     const pet2 = new Pet({ Age: 8, Name: 'Peanut' });
+    test('sequenceEqual', () => {
+        const pet1: Pet = { age: 2, name: 'Turbo' };
+        const pet2: Pet = { age: 8, name: 'Peanut' };
 
-    //     // create three lists of pets.
-    //     const pets1 = new List<Pet>([pet1, pet2]);
-    //     const pets2 = new List<Pet>([pet1, pet2]);
-    //     const pets3 = new List<Pet>([pet1]);
+        // create three lists of pets.
+        const pets1: List<Pet> = new List([pet1, pet2]);
+        const pets2: List<Pet> = new List([pet1, pet2]);
+        const pets3: List<Pet> = new List([pet1]);
 
-    //     t.true(pets1.SequenceEqual(pets2));
-    //     t.false(pets1.SequenceEqual(pets3));
-    // });
+        expect(pets1.sequenceEqual(pets2)).toBe(true);
+        expect(pets1.sequenceEqual(pets3)).toBe(false);
+    });
 
     // test('Single', () => {
     //     const fruits1 = new List<string>();

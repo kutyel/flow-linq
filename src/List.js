@@ -349,8 +349,8 @@ class List<T> {
      * using the default equality comparer for their type.
      */
     sequenceEqual(list: List<T>): boolean {
-        return !!this._elements.reduce((x, y, z) =>
-            list._elements[z] === y ? x : undefined);
+        return !!this.aggregate((accum, elem, index) =>
+            list.elementAt(index) === elem && accum, true);
     }
 
     /**
