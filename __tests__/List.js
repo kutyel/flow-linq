@@ -346,50 +346,99 @@ describe('List class', () => {
         expect(pets.min(pet => pet.age).name).toBe('Whiskers');
     });
 
-    // test('OrderBy', () => {
-    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).OrderBy(x => x).toArray(), '1,2,3,4,5,6');
-    // });
+    test('orderBy', () => {
+        expect(
+            new List([4, 5, 6, 3, 2, 1]).orderBy(x => x).toArray()
+        ).toEqual([1, 2, 3, 4, 5, 6]);
+    });
 
-    // test('OrderByDescending', () => {
-    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).OrderByDescending(x => x).toArray(), '6,5,4,3,2,1');
-    // });
+    test('orderByDescending', () => {
+        expect(
+            new List([4, 5, 6, 3, 2, 1]).orderByDescending(x => x).toArray()
+        ).toEqual([6, 5, 4, 3, 2, 1]);
+    });
 
-    // test('ThenBy', () => {
-    //     const fruits = new List<string>(['grape', 'passionfruit', 'banana', 'mango', 'orange', 'raspberry', 'apple', 'blueberry']);
+    test('thenBy', () => {
+        const fruits: List<string> = new List([
+            'grape',
+            'passionfruit',
+            'banana',
+            'mango',
+            'orange',
+            'raspberry',
+            'apple',
+            'blueberry'
+        ]);
+        // sort the strings first by their length and then
+        // alphabetically by passing the identity selector function.
+        const result: string[] = [
+            'apple',
+            'grape',
+            'mango',
+            'banana',
+            'orange',
+            'blueberry',
+            'raspberry',
+            'passionfruit'
+        ];
+        expect(fruits
+            .orderBy(fruit => fruit.length)
+            .thenBy(fruit => fruit)
+            .toArray()
+        ).toEqual(result);
+        // test omission of OrderBy
+        expect(
+            new List([4, 5, 6, 3, 2, 1]).thenBy(x => x).toArray()
+        ).toEqual([1, 2, 3, 4, 5, 6]);
+    });
 
-    //     // sort the strings first by their length and then
-    //     // alphabetically by passing the identity selector function.
-    //     const result = 'apple,grape,mango,banana,orange,blueberry,raspberry,passionfruit';
-    //     expect(fruits.OrderBy(fruit => fruit.length).ThenBy(fruit => fruit).toArray(), result);
+    test('thenByMultiple', () => {
+        const x = { a: 2, b: 1, c: 1 };
+        const y = { a: 1, b: 2, c: 2 };
+        const z = { a: 1, b: 1, c: 3 };
+        const unsorted = new List([x, y, z]);
+        const sorted = unsorted.orderBy(u => u.a)
+            .thenBy(u => u.b)
+            .thenBy(u => u.c)
+            .toArray();
 
-    //     // test omission of OrderBy
-    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).ThenBy(x => x).toArray(), '1,2,3,4,5,6');
-    // });
+        expect(sorted[0]).toEqual(z);
+        expect(sorted[1]).toEqual(y);
+        expect(sorted[2]).toEqual(x);
+    });
 
-    // test('ThenByMultiple', () => {
-    //     let x = { a: 2, b: 1, c: 1 };
-    //     let y = { a: 1, b: 2, c: 2 };
-    //     let z = { a: 1, b: 1, c: 3 };
-    //     let unsorted = new List([x, y, z]);
-    //     let sorted = unsorted.OrderBy(u => u.a)
-    //         .ThenBy(u => u.b)
-    //         .ThenBy(u => u.c)
-    //         .ToArray();
-
-    //     expect(sorted[0], z);
-    //     expect(sorted[1], y);
-    //     expect(sorted[2], x);
-    // });
-
-    // test('ThenByDescending', () => {
-    //     const fruits = new List<string>(['grape', 'passionfruit', 'banana', 'mango', 'orange', 'raspberry', 'apple', 'blueberry']);
-
-    //     // sort the strings first by their length and then
-    //     // alphabetically descending by passing the identity selector function.
-    //     const result = 'mango,grape,apple,orange,banana,raspberry,blueberry,passionfruit';
-    //     expect(fruits.OrderBy(fruit => fruit.length).ThenByDescending(fruit => fruit).toArray(), result);
-    //     expect(new List<number>([4, 5, 6, 3, 2, 1]).ThenByDescending(x => x).toArray(), '6,5,4,3,2,1');
-    // });
+    test('thenByDescending', () => {
+        const fruits: List<string> = new List([
+            'grape',
+            'passionfruit',
+            'banana',
+            'mango',
+            'orange',
+            'raspberry',
+            'apple',
+            'blueberry'
+        ]);
+        // sort the strings first by their length and then
+        // alphabetically descending by passing the identity selector function.
+        const result: string[] = [
+            'mango',
+            'grape',
+            'apple',
+            'orange',
+            'banana',
+            'raspberry',
+            'blueberry',
+            'passionfruit'
+        ];
+        expect(fruits
+            .orderBy(fruit => fruit.length)
+            .thenByDescending(fruit => fruit)
+            .toArray()
+        ).toEqual(result);
+        expect(
+            new List([4, 5, 6, 3, 2, 1]).thenByDescending(x => x).toArray()
+        ).toEqual([6, 5, 4, 3, 2, 1]);
+    });
 
     test('remove', () => {
         const fruits: List<string> = new List([
@@ -535,19 +584,23 @@ describe('List class', () => {
         expect(() => fruits3.singleOrDefault()).toThrowError(reg);
     });
 
-    // test('skip', () => {
-    //     const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
-    //     expect(
-    //         grades.orderByDescending(x => x).skip(3).toArray()
-    //     ).toEqual([82, 70, 59, 56]);
-    // });
+    test('skip', () => {
+        const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
+        expect(grades
+            .orderByDescending(x => x)
+            .skip(3)
+            .toArray()
+        ).toEqual([82, 70, 59, 56]);
+    });
 
-    // test('skipWhile', () => {
-    //     const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
-    //     expect(
-    //         grades.orderByDescending(x => x).skipWhile(g => g >= 80).toArray()
-    //     ).toEqual([70, 59, 56]);
-    // });
+    test('skipWhile', () => {
+        const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
+        expect(grades
+            .orderByDescending(x => x)
+            .skipWhile(g => g >= 80)
+            .toArray()
+        ).toEqual([70, 59, 56]);
+    });
 
     test('sum', () => {
         const people: List<Person> = new List([
@@ -559,10 +612,14 @@ describe('List class', () => {
         expect(people.sum(x => x.age)).toBe(90);
     });
 
-    // test('Take', () => {
-    //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     expect(grades.OrderByDescending(x => x).Take(3).toArray(), '98,92,85');
-    // });
+    test('take', () => {
+        const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
+        expect(grades
+            .orderByDescending(x => x)
+            .take(3)
+            .toArray()
+        ).toEqual([98, 92, 85]);
+    });
 
     test('takeWhile', () => {
         const fruits: List<string> = new List([
