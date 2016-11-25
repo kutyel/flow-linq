@@ -9,20 +9,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       *
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * JavaScript implementation of LinQ with flow annotations!
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       *
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Documentation from LinQ .NET specification (https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Documentation from LinQ .NET specification
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * (https://msdn.microsoft.com/en-us/library/system.linq.enumerable.aspx)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       *
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Created by Flavio Corpa (@kutyel)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       * Copyright © 2016 Flavio Corpa. All rights reserved.
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       *
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _ComparerHelper = require('./ComparerHelper');
-
-var _ComparerHelper2 = _interopRequireDefault(_ComparerHelper);
-
 var _OrderedList = require('./OrderedList');
 
 var _OrderedList2 = _interopRequireDefault(_OrderedList);
+
+var _helpers = require('./helpers');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -97,8 +96,8 @@ var List = function () {
         }
 
         /**
-         * Computes the average of a sequence of number values that are obtained by invoking
-         * a transform function on each element of the input sequence.
+         * Computes the average of a sequence of number values that are obtained by
+         * invoking a transform function on each element of the input sequence.
          */
 
     }, {
@@ -124,9 +123,7 @@ var List = function () {
     }, {
         key: 'contains',
         value: function contains(element) {
-            return this._elements.some(function (x) {
-                return x === element;
-            });
+            return this._elements.includes(element);
         }
 
         /**
@@ -140,8 +137,8 @@ var List = function () {
         }
 
         /**
-         * Returns the elements of the specified sequence or the type parameter's default value
-         * in a singleton collection if the sequence is empty.
+         * Returns the elements of the specified sequence or the type parameter's
+         * default value in a singleton collection if the sequence is empty.
          */
 
     }, {
@@ -151,7 +148,8 @@ var List = function () {
         }
 
         /**
-         * Returns distinct elements from a sequence by using the default equality comparer to compare values.
+         * Returns distinct elements from a sequence by using the default equality
+         * comparer to compare values.
          */
 
     }, {
@@ -173,7 +171,8 @@ var List = function () {
         }
 
         /**
-         * Returns the element at a specified index in a sequence or a default value if the index is out of range.
+         * Returns the element at a specified index in a sequence or a default
+         * value if the index is out of range.
          */
 
     }, {
@@ -183,7 +182,8 @@ var List = function () {
         }
 
         /**
-         * Produces the set difference of two sequences by using the default equality comparer to compare values.
+         * Produces the set difference of two sequences by using the default
+         * equality comparer to compare values.
          */
 
     }, {
@@ -205,7 +205,8 @@ var List = function () {
         }
 
         /**
-         * Returns the first element of a sequence, or a default value if the sequence contains no elements.
+         * Returns the first element of a sequence, or a default value if
+         * the sequence contains no elements.
          */
 
     }, {
@@ -225,7 +226,8 @@ var List = function () {
         }
 
         /**
-         * Groups the elements of a sequence according to a specified key selector function.
+         * Groups the elements of a sequence according to a specified key
+         * selector function.
          */
 
     }, {
@@ -237,14 +239,15 @@ var List = function () {
         }
 
         /**
-         * Correlates the elements of two sequences based on equality of keys and groups the results.
+         * Correlates the elements of two sequences based on equality of keys and
+         * groups the results.
          * The default equality comparer is used to compare keys.
          */
 
     }, {
         key: 'groupJoin',
         value: function groupJoin(list, key1, key2, result) {
-            return this.select(function (x, y) {
+            return this.select(function (x) {
                 return result(x, list.where(function (z) {
                     return key1(x) === key2(z);
                 }));
@@ -262,7 +265,22 @@ var List = function () {
         }
 
         /**
-         * Produces the set intersection of two sequences by using the default equality comparer to compare values.
+         * Inserts an element into the List<T> at the specified index.
+         */
+
+    }, {
+        key: 'insert',
+        value: function insert(index, element) {
+            if (index < 0 || index > this.count()) {
+                throw new Error('Index is out of range.');
+            }
+
+            this._elements.splice(index, 0, element);
+        }
+
+        /**
+         * Produces the set intersection of two sequences by using the default
+         * equality comparer to compare values.
          */
 
     }, {
@@ -274,7 +292,8 @@ var List = function () {
         }
 
         /**
-         * Correlates the elements of two sequences based on matching keys. The default equality comparer is used to compare keys.
+         * Correlates the elements of two sequences based on matching keys.
+         * The default equality comparer is used to compare keys.
          */
 
     }, {
@@ -300,7 +319,8 @@ var List = function () {
         }
 
         /**
-         * Returns the last element of a sequence, or a default value if the sequence contains no elements.
+         * Returns the last element of a sequence, or a default value if the
+         * sequence contains no elements.
          */
 
     }, {
@@ -311,36 +331,47 @@ var List = function () {
 
         /**
          * Returns the maximum value in a generic sequence.
+         * @param {(value: T) => number} comp Comparator function
          */
 
     }, {
         key: 'max',
         value: function max() {
-            return this.aggregate(function (x, y) {
-                return x > y ? x : y;
+            var comp = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (x) {
+                return Number(x);
+            };
+
+            return this._elements.reduce(function (x, y) {
+                return comp(x) > comp(y) ? x : y;
             });
         }
 
         /**
          * Returns the minimum value in a generic sequence.
+         * @param {(value: T) => number} comp Comparator function
          */
 
     }, {
         key: 'min',
         value: function min() {
-            return this.aggregate(function (x, y) {
-                return x < y ? x : y;
+            var comp = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function (x) {
+                return Number(x);
+            };
+
+            return this._elements.reduce(function (x, y) {
+                return comp(x) < comp(y) ? x : y;
             });
         }
 
         /**
-         * Sorts the elements of a sequence in ascending order according to a key.
+         * Sorts the elements of a sequence in ascending order
+         * according to a key.
          */
 
     }, {
         key: 'orderBy',
         value: function orderBy(keySelector) {
-            return new _OrderedList2.default() < T > (this._elements, _ComparerHelper2.default.comparerForKey(keySelector, false));
+            return new _OrderedList2.default(this._elements, (0, _helpers.comparerForKey)(keySelector, false));
         }
 
         /**
@@ -350,11 +381,12 @@ var List = function () {
     }, {
         key: 'orderByDescending',
         value: function orderByDescending(keySelector) {
-            return new _OrderedList2.default() < T > (this._elements, _ComparerHelper2.default.comparerForKey(keySelector, true));
+            return new _OrderedList2.default(this._elements, (0, _helpers.comparerForKey)(keySelector, true));
         }
 
         /**
-         * Performs a subsequent ordering of the elements in a sequence in ascending order according to a key.
+         * Performs a subsequent ordering of the elements in a sequence in
+         * ascending order according to a key.
          */
 
     }, {
@@ -364,7 +396,8 @@ var List = function () {
         }
 
         /**
-         * Performs a subsequent ordering of the elements in a sequence in descending order, according to a key.
+         * Performs a subsequent ordering of the elements in a sequence in
+         * descending order, according to a key.
          */
 
     }, {
@@ -384,7 +417,8 @@ var List = function () {
         }
 
         /**
-         * Removes all the elements that match the conditions defined by the specified predicate.
+         * Removes all the elements that match the conditions defined by the
+         * specified predicate.
          */
 
     }, {
@@ -424,7 +458,8 @@ var List = function () {
         }
 
         /**
-         * Projects each element of a sequence to a List<any> and flattens the resulting sequences into one sequence.
+         * Projects each element of a sequence to a List<any> and flattens the
+         * resulting sequences into one sequence.
          */
 
     }, {
@@ -438,34 +473,38 @@ var List = function () {
         }
 
         /**
-         * Determines whether two sequences are equal by comparing the elements by using the default equality comparer for their type.
+         * Determines whether two sequences are equal by comparing the elements by
+         * using the default equality comparer for their type.
          */
 
     }, {
         key: 'sequenceEqual',
         value: function sequenceEqual(list) {
-            return !!this._elements.reduce(function (x, y, z) {
-                return list._elements[z] === y ? x : undefined;
-            });
+            return !!this.aggregate(function (accum, elem, index) {
+                return list.elementAt(index) === elem && accum;
+            }, true);
         }
 
         /**
-         * Returns the only element of a sequence, and throws an exception if there is not exactly one element in the sequence.
+         * Returns the only element of a sequence, and throws an exception if there
+         *  is not exactly one element in the sequence.
          */
 
     }, {
         key: 'single',
         value: function single() {
+            var ERROR = 'The collection does not contain exactly one element.';
             if (this.count() !== 1) {
-                throw new TypeError('The collection does not contain exactly one element.');
+                throw new Error(ERROR);
             } else {
                 return this.first();
             }
         }
 
         /**
-         * Returns the only element of a sequence, or a default value if the sequence is empty;
-         * this method throws an exception if there is more than one element in the sequence.
+         * Returns the only element of a sequence, or a default value if the
+         * sequence is empty; this method throws an exception if there is more than
+         * one element in the sequence.
          */
 
     }, {
@@ -475,7 +514,8 @@ var List = function () {
         }
 
         /**
-         * Bypasses a specified number of elements in a sequence and then returns the remaining elements.
+         * Bypasses a specified number of elements in a sequence and then returns
+         * the remaining elements.
          */
 
     }, {
@@ -485,7 +525,8 @@ var List = function () {
         }
 
         /**
-         * Bypasses elements in a sequence as long as a specified condition is true and then returns the remaining elements.
+         * Bypasses elements in a sequence as long as a specified condition is true
+         * and then returns the remaining elements.
          */
 
     }, {
@@ -493,26 +534,27 @@ var List = function () {
         value: function skipWhile(predicate) {
             var _this2 = this;
 
-            return this.skip(this.aggregate(function (ac, val) {
-                return predicate(_this2.elementAt(ac)) ? ++ac : ac;
+            return this.skip(this.aggregate(function (x) {
+                return predicate(_this2.elementAt(x)) ? ++x : x;
             }, 0));
         }
 
         /**
-         * Computes the sum of the sequence of number values that are obtained by invoking
-         * a transform function on each element of the input sequence.
+         * Computes the sum of the sequence of number values that are obtained by
+         * invoking a transform function on each element of the input sequence.
          */
 
     }, {
         key: 'sum',
         value: function sum(transform) {
             return transform ? this.select(transform).sum() : this.aggregate(function (ac, v) {
-                return ac + v;
+                return ac + Number(v);
             }, 0);
         }
 
         /**
-         * Returns a specified number of contiguous elements from the start of a sequence.
+         * Returns a specified number of contiguous elements from the start of a
+         * sequence.
          */
 
     }, {
@@ -522,7 +564,8 @@ var List = function () {
         }
 
         /**
-         * Returns elements from a sequence as long as a specified condition is true.
+         * Returns elements from a sequence as long as a specified condition is
+         * true.
          */
 
     }, {
@@ -530,8 +573,8 @@ var List = function () {
         value: function takeWhile(predicate) {
             var _this3 = this;
 
-            return this.take(this.aggregate(function (ac, val) {
-                return predicate(_this3.elementAt(ac)) ? ++ac : ac;
+            return this.take(this.aggregate(function (x) {
+                return predicate(_this3.elementAt(x)) ? ++x : x;
             }, 0));
         }
 
@@ -546,7 +589,8 @@ var List = function () {
         }
 
         /**
-         * Creates a Dictionary<TKey, TValue> from a List<T> according to a specified key selector function.
+         * Creates a Dictionary<TKey,TValue> from a List<T> according to a
+         * specified key selector function.
          */
 
     }, {
@@ -570,7 +614,8 @@ var List = function () {
         }
 
         /**
-         * Creates a Lookup<TKey, TElement> from an IEnumerable<T> according to specified key selector and element selector functions.
+         * Creates a Lookup<TKey, TElement> from an IEnumerable<T> according to
+         * specified key selector and element selector functions.
          */
 
     }, {
@@ -580,7 +625,8 @@ var List = function () {
         }
 
         /**
-         * Produces the set union of two sequences by using the default equality comparer.
+         * Produces the set union of two sequences by using the default equality
+         * comparer.
          */
 
     }, {
@@ -600,7 +646,8 @@ var List = function () {
         }
 
         /**
-         * Applies a specified function to the corresponding elements of two sequences, producing a sequence of the results.
+         * Applies a specified function to the corresponding elements of two
+         * sequences, producing a sequence of the results.
          */
 
     }, {
@@ -622,11 +669,8 @@ var List = function () {
     }, {
         key: '_negate',
         value: function _negate(predicate) {
-            var _this6 = this,
-                _arguments = arguments;
-
             return function () {
-                return !predicate.apply(_this6, _arguments);
+                return !predicate.apply(this, arguments);
             };
         }
     }]);

@@ -11,8 +11,8 @@
  *
  */
 
-// import OrderedList from './OrderedList';
-// import { comparerForKey } from './ComparerFunctions';
+import OrderedList from './OrderedList';
+import { comparerForKey } from './helpers';
 
 class List<T> {
 
@@ -270,7 +270,7 @@ class List<T> {
     /**
      * Sorts the elements of a sequence in ascending order
      * according to a key.
-     *
+     */
     orderBy(keySelector: (key: T) => any): List<T> {
         return new OrderedList(
             this._elements,
@@ -280,7 +280,7 @@ class List<T> {
 
     /**
      * Sorts the elements of a sequence in descending order according to a key.
-     *
+     */
     orderByDescending(keySelector: (key: T) => any): List<T> {
         return new OrderedList(
             this._elements,
@@ -291,7 +291,7 @@ class List<T> {
     /**
      * Performs a subsequent ordering of the elements in a sequence in
      * ascending order according to a key.
-     *
+     */
     thenBy(keySelector: (key: T) => any): List<T> {
         return this.orderBy(keySelector);
     }
@@ -299,7 +299,7 @@ class List<T> {
     /**
      * Performs a subsequent ordering of the elements in a sequence in
      * descending order, according to a key.
-     *
+     */
     thenByDescending(keySelector: (key: T) => any): List<T> {
         return this.orderByDescending(keySelector);
     }
@@ -399,7 +399,7 @@ class List<T> {
      * and then returns the remaining elements.
      */
     skipWhile(
-        predicate: (value?: T, index?: number, list?: T[]) => boolean
+        predicate: (value: T, index?: number, list?: T[]) => boolean
     ): List<T> {
         return this.skip(this.aggregate(x =>
             predicate(this.elementAt(x)) ? ++x : x, 0));

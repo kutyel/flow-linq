@@ -31,7 +31,8 @@ var Enumerable = function () {
          * @returns {List.<number>} Sequence of integers within the specified range.
          */
         value: function range(start, count) {
-            var result = new _List2.default();while (count--) {
+            var result = new _List2.default();
+            while (count--) {
                 result.add(start++);
             }return result;
         }
@@ -47,7 +48,8 @@ var Enumerable = function () {
     }, {
         key: 'repeat',
         value: function repeat(element, count) {
-            var result = new _List2.default();while (count--) {
+            var result = new _List2.default();
+            while (count--) {
                 result.add(element);
             }return result;
         }
