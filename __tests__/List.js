@@ -253,6 +253,26 @@ describe('List class', () => {
         expect(pets.indexOf(boots)).toBe(1);
     });
 
+    test('insert', () => {
+        const ERROR = /Index is out of range./;
+        const pets: List<Pet> = new List([
+            { age: 10, name: 'Barley' },
+            { age: 4, name: 'Boots' },
+            { age: 6, name: 'Whiskers' }
+        ]);
+        const newPet: Pet = { age: 12, name: 'Max' };
+
+        pets.insert(0, newPet);
+        pets.insert(pets.count(), newPet);
+
+        expect(pets.first()).toEqual(newPet);
+        expect(pets.last()).toEqual(newPet);
+        expect(() => pets.insert(-1, newPet)).toThrowError(ERROR);
+        expect(
+            () => pets.insert(pets.count() + 1, newPet)
+        ).toThrowError(ERROR);
+    });
+
     test('intersect', () => {
         const id1: List<number> = new List([44, 26, 92, 30, 71, 38]);
         const id2: List<number> = new List([39, 59, 83, 47, 26, 4, 30]);
