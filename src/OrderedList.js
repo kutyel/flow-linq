@@ -31,7 +31,8 @@ class OrderedList<T> extends List<T> {
      */
     thenBy(keySelector: (key: T) => any): List<T> {
         return new OrderedList(
-            this._elements, composeComparers(
+            this._elements,
+            composeComparers(
                 this._comparer,
                 comparerForKey(keySelector, false)
             )
@@ -49,7 +50,8 @@ class OrderedList<T> extends List<T> {
     thenByDescending(keySelector: (key: T) => any): List<T> {
         return new OrderedList(
             this._elements,
-            composeComparers(this._comparer,
+            composeComparers(
+                this._comparer,
                 comparerForKey(keySelector, true)
             )
         );
