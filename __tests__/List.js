@@ -10,7 +10,7 @@ type Package = {
 
 type Person = {
     name: string;
-    age?: number;
+    age: number;
 };
 
 type Pet = {
@@ -18,6 +18,11 @@ type Pet = {
     age: number;
     owner?: Person;
     vaccinated?: boolean;
+};
+
+type PetOwner = {
+    name: string;
+    pets: List<Pet>
 };
 
 describe('List class', () => {
@@ -196,9 +201,9 @@ describe('List class', () => {
     });
 
     test('groupJoin', () => {
-        const magnus: Person = { name: 'Hedlund, Magnus' };
-        const terry: Person = { name: 'Adams, Terry' };
-        const charlotte: Person = { name: 'Weiss, Charlotte' };
+        const magnus: Person = { age: 22, name: 'Hedlund, Magnus' };
+        const terry: Person = { age: 23, name: 'Adams, Terry' };
+        const charlotte: Person = { age: 24, name: 'Weiss, Charlotte' };
 
         const barley: Pet = { age: 8, name: 'Barley', owner: terry };
         const boots: Pet = { age: 4, name: 'Boots', owner: terry };
@@ -255,9 +260,9 @@ describe('List class', () => {
     });
 
     test('join', () => {
-        const magnus: Person = { name: 'Hedlund, Magnus' };
-        const terry: Person = { name: 'Adams, Terry' };
-        const charlotte: Person = { name: 'Weiss, Charlotte' };
+        const magnus: Person = { age: 22, name: 'Hedlund, Magnus' };
+        const terry: Person = { age: 23, name: 'Adams, Terry' };
+        const charlotte: Person = { age: 24, name: 'Weiss, Charlotte' };
 
         const barley: Pet = { age: 8, name: 'Barley', owner: terry };
         const boots: Pet = { age: 4, name: 'Boots', owner: terry };
@@ -366,84 +371,116 @@ describe('List class', () => {
     //     expect(new List<number>([4, 5, 6, 3, 2, 1]).ThenByDescending(x => x).toArray(), '6,5,4,3,2,1');
     // });
 
-    // test('Remove', () => {
-    //     const fruits = new List<string>(['apple', 'banana', 'mango', 'orange', 'passionfruit', 'grape']);
+    test('remove', () => {
+        const fruits: List<string> = new List([
+            'apple',
+            'banana',
+            'mango',
+            'orange',
+            'passionfruit',
+            'grape'
+        ]);
 
-    //     const barley = new Pet({ Age: 8, Name: 'Barley', Vaccinated: true });
-    //     const boots = new Pet({ Age: 4, Name: 'Boots', Vaccinated: false });
-    //     const whiskers = new Pet({ Age: 1, Name: 'Whiskers', Vaccinated: false });
-    //     const pets = new List<Pet>([barley, boots, whiskers]);
-    //     const lessPets = new List<Pet>([barley, whiskers]);
+        const barley: Pet = { age: 8, name: 'Barley', vaccinated: true };
+        const boots: Pet = { age: 4, name: 'Boots', vaccinated: false };
+        const whiskers: Pet = { age: 1, name: 'Whiskers', vaccinated: false };
+        const pets: List<Pet> = new List([barley, boots, whiskers]);
+        const lessPets: List<Pet> = new List([barley, whiskers]);
 
-    //     t.true(fruits.Remove('orange'));
-    //     t.false(fruits.Remove('strawberry'));
-    //     t.true(pets.Remove(boots));
-    //     t.deepEqual(pets, lessPets);
-    // });
+        expect(fruits.remove('orange')).toBe(true);
+        expect(fruits.remove('strawberry')).toBe(false);
+        expect(pets.remove(boots)).toBe(true);
+        expect(pets).toEqual(lessPets);
+    });
 
-    // test('RemoveAll', () => {
-    //     const dinosaurs = new List<string>([
-    //         'Compsognathus',
-    //         'Amargasaurus',
-    //         'Oviraptor',
-    //         'Velociraptor',
-    //         'Deinonychus',
-    //         'Dilophosaurus',
-    //         'Gallimimus',
-    //         'Triceratops'
-    //     ]);
-    //     const lessDinosaurs = new List<string>([
-    //         'Compsognathus',
-    //         'Oviraptor',
-    //         'Velociraptor',
-    //         'Deinonychus',
-    //         'Gallimimus',
-    //         'Triceratops'
-    //     ]);
-    //     t.deepEqual(dinosaurs.RemoveAll(x => x.endsWith('saurus')), lessDinosaurs);
-    // });
+    test('removeAll', () => {
+        const dinosaurs: List<string> = new List([
+            'Compsognathus',
+            'Amargasaurus',
+            'Oviraptor',
+            'Velociraptor',
+            'Deinonychus',
+            'Dilophosaurus',
+            'Gallimimus',
+            'Triceratops'
+        ]);
+        const lessDinosaurs: List<string> = new List([
+            'Compsognathus',
+            'Oviraptor',
+            'Velociraptor',
+            'Deinonychus',
+            'Gallimimus',
+            'Triceratops'
+        ]);
+        expect(
+            dinosaurs.removeAll(x => x.endsWith('saurus'))
+        ).toEqual(lessDinosaurs);
+    });
 
-    // test('RemoveAt', () => {
-    //     const dinosaurs = new List<string>([
-    //         'Compsognathus',
-    //         'Amargasaurus',
-    //         'Oviraptor',
-    //         'Velociraptor',
-    //         'Deinonychus',
-    //         'Dilophosaurus',
-    //         'Gallimimus',
-    //         'Triceratops'
-    //     ]);
-    //     const lessDinosaurs = new List<string>([
-    //         'Compsognathus',
-    //         'Amargasaurus',
-    //         'Oviraptor',
-    //         'Deinonychus',
-    //         'Dilophosaurus',
-    //         'Gallimimus',
-    //         'Triceratops'
-    //     ]);
-    //     dinosaurs.RemoveAt(3);
-    //     t.deepEqual(dinosaurs, lessDinosaurs);
-    // });
+    test('removeAt', () => {
+        const dinosaurs: List<string> = new List([
+            'Compsognathus',
+            'Amargasaurus',
+            'Oviraptor',
+            'Velociraptor',
+            'Deinonychus',
+            'Dilophosaurus',
+            'Gallimimus',
+            'Triceratops'
+        ]);
+        const lessDinosaurs: List<string> = new List([
+            'Compsognathus',
+            'Amargasaurus',
+            'Oviraptor',
+            'Deinonychus',
+            'Dilophosaurus',
+            'Gallimimus',
+            'Triceratops'
+        ]);
+        dinosaurs.removeAt(3);
+        expect(dinosaurs).toEqual(lessDinosaurs);
+    });
 
-    // test('Reverse', () => {
-    //     expect(new List<number>([1, 2, 3, 4, 5]).Reverse().toArray(), '5,4,3,2,1');
-    // });
+    test('reverse', () => {
+        expect(new List([1, 2, 3, 4, 5]).reverse().toArray(), [5, 4, 3, 2, 1]);
+    });
 
-    // test('Select', () => {
-    //     expect(new List<number>([1, 2, 3]).Select(x => x * 2).toArray(), '2,4,6');
-    // });
+    test('select', () => {
+        expect(new List([1, 2, 3]).select(x => x * 2).toArray(), [2, 4, 6]);
+    });
 
-    // test('SelectMany', () => {
-    //     const petOwners = new List<PetOwner>([
-    //         new PetOwner('Higa, Sidney', new List<Pet>([new Pet({ Name: 'Scruffy' }), new Pet({ Name: 'Sam' })])),
-    //         new PetOwner('Ashkenazi, Ronen', new List<Pet>([new Pet({ Name: 'Walker' }), new Pet({ Name: 'Sugar' })])),
-    //         new PetOwner('Price, Vernette', new List<Pet>([new Pet({ Name: 'Scratches' }), new Pet({ Name: 'Diesel' })]))
-    //     ]);
-    //     const result = 'Scruffy,Sam,Walker,Sugar,Scratches,Diesel';
-    //     expect(petOwners.SelectMany(petOwner => petOwner.Pets).Select(pet => pet.Name).toArray(), result);
-    // });
+    test('selectMany', () => {
+        const pets: List<Pet> = new List([
+            { age: 1, name: 'Scruffy' },
+            { age: 2, name: 'Sam' }
+        ]);
+        const morePets: List<Pet> = new List([
+            { age: 3, name: 'Walker' },
+            { age: 4, name: 'Sugar' }
+        ]);
+        const evenMorePets: List<Pet> = new List([
+            { age: 5, name: 'Scratches' },
+            { age: 6, name: 'Diesel' }
+        ]);
+        const petOwners: List<PetOwner> = new List([
+            { name: 'Higa, Sidney', pets },
+            { name: 'Ashkenazi, Ronen', pets: morePets },
+            { name: 'Price, Vernette', pets: evenMorePets }
+        ]);
+        const result = [
+            'Scruffy',
+            'Sam',
+            'Walker',
+            'Sugar',
+            'Scratches',
+            'Diesel'
+        ];
+        expect(petOwners
+            .selectMany(petOwner => petOwner.pets)
+            .select(pet => pet.name)
+            .toArray()
+        ).toEqual(result);
+    });
 
     test('sequenceEqual', () => {
         const pet1: Pet = { age: 2, name: 'Turbo' };
@@ -458,69 +495,84 @@ describe('List class', () => {
         expect(pets1.sequenceEqual(pets3)).toBe(false);
     });
 
-    // test('Single', () => {
-    //     const fruits1 = new List<string>();
-    //     const fruits2 = new List<string>(['orange']);
-    //     const fruits3 = new List<string>(['orange', 'apple']);
-    //     expect(fruits2.Single(), 'orange');
-    //     t.throws(() => fruits1.Single(), /The collection does not contain exactly one element./);
-    //     t.throws(() => fruits3.Single(), /The collection does not contain exactly one element./);
+    test('single', () => {
+        const reg = /The collection does not contain exactly one element./;
+        const fruits1: List<string> = new List();
+        const fruits2: List<string> = new List(['orange']);
+        const fruits3: List<string> = new List(['orange', 'apple']);
+        expect(fruits2.single()).toBe('orange');
+        expect(() => fruits1.single()).toThrowError(reg);
+        expect(() => fruits3.single()).toThrowError(reg);
+    });
+
+    test('singleOrDefault', () => {
+        const reg = /The collection does not contain exactly one element./;
+        const fruits1: List<string> = new List();
+        const fruits2: List<string> = new List(['orange']);
+        const fruits3: List<string> = new List(['orange', 'apple']);
+        expect(fruits1.singleOrDefault()).toBeUndefined();
+        expect(fruits2.singleOrDefault()).toBe('orange');
+        expect(() => fruits3.singleOrDefault()).toThrowError(reg);
+    });
+
+    // test('skip', () => {
+    //     const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
+    //     expect(
+    //         grades.orderByDescending(x => x).skip(3).toArray()
+    //     ).toEqual([82, 70, 59, 56]);
     // });
 
-    // test('SingleOrDefault', () => {
-    //     const fruits1 = new List<string>();
-    //     const fruits2 = new List<string>(['orange']);
-    //     const fruits3 = new List<string>(['orange', 'apple']);
-    //     expect(fruits1.SingleOrDefault(), undefined);
-    //     expect(fruits2.SingleOrDefault(), 'orange');
-    //     t.throws(() => fruits3.SingleOrDefault(), /The collection does not contain exactly one element./);
+    // test('skipWhile', () => {
+    //     const grades: List<number> = new List([59, 82, 70, 56, 92, 98, 85]);
+    //     expect(
+    //         grades.orderByDescending(x => x).skipWhile(g => g >= 80).toArray()
+    //     ).toEqual([70, 59, 56]);
     // });
 
-    // test('Skip', () => {
-    //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     expect(grades.OrderByDescending(x => x).Skip(3).toArray(), '82,70,59,56');
-    // });
-
-    // test('SkipWhile', () => {
-    //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
-    //     expect(grades.OrderByDescending(x => x).SkipWhile(grade => grade >= 80).toArray(), '70,59,56');
-    // });
-
-    // test('Sum', () => {
-    //     const people = new List<IPerson>([
-    //         { Age: 15, Name: 'Cathy' },
-    //         { Age: 25, Name: 'Alice' },
-    //         { Age: 50, Name: 'Bob' }
-    //     ]);
-    //     expect(new List<number>([2, 3, 5]).Sum(), 10);
-    //     expect(people.Sum(x => x.Age), 90);
-    // });
+    test('sum', () => {
+        const people: List<Person> = new List([
+            { age: 15, name: 'Cathy' },
+            { age: 25, name: 'Alice' },
+            { age: 50, name: 'Bob' }
+        ]);
+        expect(new List([2, 3, 5]).sum()).toBe(10);
+        expect(people.sum(x => x.age)).toBe(90);
+    });
 
     // test('Take', () => {
     //     const grades = new List<number>([59, 82, 70, 56, 92, 98, 85]);
     //     expect(grades.OrderByDescending(x => x).Take(3).toArray(), '98,92,85');
     // });
 
-    // test('TakeWhile', () => {
-    //     const fruits = new List<string>(['apple', 'banana', 'mango', 'orange', 'passionfruit', 'grape']);
-    //     expect(fruits.TakeWhile(fruit => fruit !== 'orange').toArray(), 'apple,banana,mango');
-    // });
+    test('takeWhile', () => {
+        const fruits: List<string> = new List([
+            'apple',
+            'banana',
+            'mango',
+            'orange',
+            'passionfruit',
+            'grape'
+        ]);
+        expect(
+            fruits.takeWhile(fruit => fruit !== 'orange').toArray()
+        ).toEqual(['apple', 'banana', 'mango']);
+    });
 
-    // test('ToArray', () => {
-    //     expect(new List<number>([1, 2, 3, 4, 5]).toArray(), '1,2,3,4,5');
-    // });
+    test('toArray', () => {
+        expect(new List([1, 2, 3, 4, 5]).toArray()).toEqual([1, 2, 3, 4, 5]);
+    });
 
-    // test('ToDictionary', () => {
-    //     const people = new List<IPerson>([
-    //         { Age: 15, Name: 'Cathy' },
-    //         { Age: 25, Name: 'Alice' },
-    //         { Age: 50, Name: 'Bob' }
-    //     ]);
-    //     const dictionary = people.ToDictionary(x => x.Name);
-    //     t.deepEqual(dictionary['Bob'], { Age: 50, Name: 'Bob' });
-    //     const dictionary2 = people.ToDictionary(x => x.Name, y => y.Age);
-    //     expect(dictionary2['Alice'], 25);
-    // });
+    test('toDictionary', () => {
+        const people: List<Person> = new List([
+            { age: 15, name: 'Cathy' },
+            { age: 25, name: 'Alice' },
+            { age: 50, name: 'Bob' }
+        ]);
+        const dictionary = people.toDictionary(x => x.name);
+        expect(dictionary.Bob).toEqual({ age: 50, name: 'Bob' });
+        const dictionary2 = people.toDictionary(x => x.name, y => y.age);
+        expect(dictionary2.Alice).toBe(25);
+    });
 
     test('toList', () => {
         expect(new List([1, 2, 3]).toList().toArray()).toEqual([1, 2, 3]);

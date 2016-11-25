@@ -306,7 +306,7 @@ class List<T> {
      * specified predicate.
      */
     removeAll(
-        predicate: (value?: T, index?: number, list?: T[]) => boolean
+        predicate: (value: T, index?: number, list?: T[]) => boolean
     ): List<T> {
         return this.where(this._negate(predicate));
     }
@@ -436,8 +436,8 @@ class List<T> {
      * specified key selector function.
      */
     toDictionary<TKey, TValue>(
-        key: (key: any) => TKey,
-        value?: (value: any) => TValue
+        key: (key: T) => TKey,
+        value?: (value: T) => TValue
     ): any {
         return this.aggregate((o, v, i) =>
             ((o)[this.select(key).elementAt(i)] = value ?
@@ -492,8 +492,10 @@ class List<T> {
     /**
      * Creates a function that negates the result of the predicate
      */
-    _negate(predicate: (value?: T, index?: number, list?: T[]) => boolean) {
-        return () => !predicate.apply(this, arguments);
+    _negate(predicate: (value: T, index?: number, list?: T[]) => boolean) {
+        return function (): boolean {
+            return !predicate.apply(this, arguments);
+        };
     }
 }
 
