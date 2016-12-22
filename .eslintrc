@@ -118,8 +118,11 @@
         "no-unused-expressions": 0,
         "no-unused-vars": 1,
         "no-use-before-define": [
-            2,
-            "nofunc"
+            "error",
+            {
+                "functions": true,
+                "classes": false
+            }
         ],
         "no-with": 2,
         "one-var": [
