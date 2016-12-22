@@ -17,13 +17,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       *
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       */
 
-var _OrderedList = require('./OrderedList');
-
-var _OrderedList2 = _interopRequireDefault(_OrderedList);
-
 var _helpers = require('./helpers');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -371,7 +369,7 @@ var List = function () {
     }, {
         key: 'orderBy',
         value: function orderBy(keySelector) {
-            return new _OrderedList2.default(this._elements, (0, _helpers.comparerForKey)(keySelector, false));
+            return new OrderedList(this._elements, (0, _helpers.comparerForKey)(keySelector, false));
         }
 
         /**
@@ -381,7 +379,7 @@ var List = function () {
     }, {
         key: 'orderByDescending',
         value: function orderByDescending(keySelector) {
-            return new _OrderedList2.default(this._elements, (0, _helpers.comparerForKey)(keySelector, true));
+            return new OrderedList(this._elements, (0, _helpers.comparerForKey)(keySelector, true));
         }
 
         /**
@@ -677,5 +675,63 @@ var List = function () {
 
     return List;
 }();
+
+/**
+ * Represents a sorted sequence. The methods of this class are implemented by
+ * using deferred execution. The immediate return value is an object that
+ * stores all the information that is required to perform the action.
+ * The query represented by this method is not executed until the object is
+ * enumerated either by calling its toDictionary, toLookup, toList or
+ * toArray methods
+ */
+
+
+var OrderedList = function (_List) {
+    _inherits(OrderedList, _List);
+
+    function OrderedList(elements, comparer) {
+        _classCallCheck(this, OrderedList);
+
+        var _this6 = _possibleConstructorReturn(this, (OrderedList.__proto__ || Object.getPrototypeOf(OrderedList)).call(this, elements));
+
+        _this6._comparer = comparer;
+        _this6._elements.sort(_this6._comparer);
+        return _this6;
+    }
+
+    /**
+     * Performs a subsequent ordering of the elements in a sequence in
+     * ascending order according to a key.
+     *
+     * @override
+     * @param keySelector
+     * @returns {OrderedList}
+     */
+
+
+    _createClass(OrderedList, [{
+        key: 'thenBy',
+        value: function thenBy(keySelector) {
+            return new OrderedList(this._elements, (0, _helpers.composeComparers)(this._comparer, (0, _helpers.comparerForKey)(keySelector, false)));
+        }
+
+        /**
+         * Performs a subsequent ordering of the elements in a sequence in
+         * descending order, according to a key.
+         *
+         * @override
+         * @param keySelector
+         * @returns {OrderedList}
+         */
+
+    }, {
+        key: 'thenByDescending',
+        value: function thenByDescending(keySelector) {
+            return new OrderedList(this._elements, (0, _helpers.composeComparers)(this._comparer, (0, _helpers.comparerForKey)(keySelector, true)));
+        }
+    }]);
+
+    return OrderedList;
+}(List);
 
 exports.default = List;
