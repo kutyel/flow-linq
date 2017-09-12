@@ -9,17 +9,18 @@
  * @returns {number}
  */
 export function compare<T>(
-    a: T,
-    b: T,
-    _keySelector: (key: T) => any, descending?: boolean
+  a: T,
+  b: T,
+  _keySelector: (key: T) => any,
+  descending?: boolean
 ): number {
-    if (_keySelector(a) > _keySelector(b)) {
-        return !descending ? 1 : -1;
-    } else if (_keySelector(a) < _keySelector(b)) {
-        return !descending ? -1 : 1;
-    } else {
-        return 0;
-    }
+  if (_keySelector(a) > _keySelector(b)) {
+    return !descending ? 1 : -1;
+  } else if (_keySelector(a) < _keySelector(b)) {
+    return !descending ? -1 : 1;
+  } else {
+    return 0;
+  }
 }
 
 /**
@@ -29,10 +30,10 @@ export function compare<T>(
  * @returns {function(T=, T=): number}
  */
 export function comparerForKey<T>(
-    _keySelector: (key: T) => any,
-    descending?: boolean
+  _keySelector: (key: T) => any,
+  descending?: boolean
 ): (a: T, b: T) => number {
-    return (a: T, b: T) => compare(a, b, _keySelector, descending);
+  return (a: T, b: T) => compare(a, b, _keySelector, descending);
 }
 
 /**
@@ -42,8 +43,8 @@ export function comparerForKey<T>(
  * @returns {function(T=, T=): *}
  */
 export function composeComparers<T>(
-    previousComparer: (a: T, b: T) => number,
-    currentComparer: (a: T, b: T) => number
+  previousComparer: (a: T, b: T) => number,
+  currentComparer: (a: T, b: T) => number
 ): (a: T, b: T) => number {
-    return (a: T, b: T) => previousComparer(a, b) || currentComparer(a, b);
+  return (a: T, b: T) => previousComparer(a, b) || currentComparer(a, b);
 }
