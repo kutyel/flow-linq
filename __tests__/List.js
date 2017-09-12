@@ -153,7 +153,7 @@ describe('List class', () => {
   test('elementAt', () => {
     const names: List<string> = new List(['Hartono', 'Adams', 'Andersen'])
     expect(names.elementAt(0)).toBe('Hartono')
-    // expect(names.elementAt(3)).toThrowError();
+    // TODO: expect(names.elementAt(3)).toThrowError();
   })
 
   test('elementAtOrDefault', () => {
@@ -313,7 +313,7 @@ describe('List class', () => {
   test('last', () => {
     expect(new List(['what', 'is', 'up']).last()).toBe('up')
     expect(new List([1, 2, 3, 4, 5]).last(x => x > 2)).toBe(5)
-    // expect(new List().last()).toThrowError();
+    // TODO: expect(new List().last()).toThrowError();
   })
 
   test('lastOrDefault', () => {
