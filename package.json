@@ -1,6 +1,6 @@
 {
   "name": "flow-linq",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description":
     "Another LINQ implementation in JavaScript, but with Flow annotations!",
   "main": "index.js",
@@ -47,6 +47,9 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kutyel/flow-linq/issues"
+  },
+  "engines": {
+    "node": ">= 6"
   },
   "homepage": "https://github.com/kutyel/flow-linq#readme",
   "devDependencies": {
