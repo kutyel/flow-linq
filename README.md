@@ -14,6 +14,29 @@ Another LINQ implementation in JavaScript, but with Flow annotations!
 
 [![flow-linq](https://raw.githubusercontent.com/kutyel/flow-linq/master/flow-linq.png)](https://flow.org/en/)
 
+## Install
+```sh
+$ npm install --save flow-linq
+```
+## Usage
+```ts
+import { List } from 'flow-linq'
+
+const cats: List<Pet> = new List([
+  { age: 8, name: 'Barley' },
+  { age: 4, name: 'Boots' },
+  { age: 1, name: 'Whiskers' },
+])
+
+cats
+  .where(cat => cat.age > 3)
+  .select(cat => cat.name)
+  .toArray() // > ['Barley', 'Boots']
+```
+## Demo
+```ts
+// TODO: fancy gif here 😎
+```
 ## License
 
 MIT © [Flavio Corpa](http://flaviocorpa.com)
