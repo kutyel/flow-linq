@@ -22,7 +22,9 @@ $ npm install --save flow-linq
 ```ts
 import { List } from 'flow-linq'
 
-const cats: List<Pet> = new List([
+type Cat = { age: number, name: string }
+
+const cats: List<Cat> = new List([
   { age: 8, name: 'Barley' },
   { age: 4, name: 'Boots' },
   { age: 1, name: 'Whiskers' },
