@@ -12,7 +12,7 @@
 
 Another LINQ implementation in JavaScript, but with Flow annotations!
 
-[![linqts](https://raw.githubusercontent.com/kutyel/flow-linq/master/linq.png)](https://flow.org/en/)
+[![flow-linq](https://raw.githubusercontent.com/kutyel/flow-linq/master/flow-linq.png)](https://flow.org/en/)
 
 ## License
 
