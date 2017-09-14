@@ -11,7 +11,7 @@
  *
  */
 
-import { comparerForKey, composeComparers } from "./helpers";
+import { comparerForKey, composeComparers } from './helpers';
 
 class List<T> {
   _elements: T[];
@@ -110,7 +110,11 @@ class List<T> {
      * Returns the element at a specified index in a sequence.
      */
   elementAt(index: number): T {
-    return this._elements[index];
+    if (index < this.count()) {
+      return this._elements[index];
+    } else {
+      throw Error('ArgumentOutOfRangeException');
+    }
   }
 
   /**
@@ -195,7 +199,7 @@ class List<T> {
      */
   insert(index: number, element: T): void {
     if (index < 0 || index > this.count()) {
-      throw new Error("Index is out of range.");
+      throw new Error('Index is out of range.');
     }
 
     this._elements.splice(index, 0, element);
@@ -228,9 +232,13 @@ class List<T> {
      * Returns the last element of a sequence.
      */
   last(predicate?: (value: T, index?: number, list?: T[]) => boolean): T {
-    return predicate
-      ? this.where(predicate).last()
-      : this._elements[this.count() - 1];
+    if (this.count()) {
+      return predicate
+        ? this.where(predicate).last()
+        : this._elements[this.count() - 1];
+    } else {
+      throw Error('InvalidOperationException: The source sequence is empty.');
+    }
   }
 
   /**
@@ -352,11 +360,12 @@ class List<T> {
      * Determines whether two sequences are equal by comparing the elements by
      * using the default equality comparer for their type.
      */
-  sequenceEqual(list: List<T>): boolean {
-    return !!this.aggregate(
-      (accum, elem, index) => list.elementAt(index) === elem && accum,
-      true
-    );
+  sequenceEqual(list: List<T>): ?boolean {
+    try {
+      return this._elements.every((el, i) => el === list.elementAt(i));
+    } catch (err) {
+      return false;
+    }
   }
 
   /**
@@ -364,7 +373,7 @@ class List<T> {
      *  is not exactly one element in the sequence.
      */
   single(): T | void {
-    const ERROR = "The collection does not contain exactly one element.";
+    const ERROR = 'The collection does not contain exactly one element.';
     if (this.count() !== 1) {
       throw new Error(ERROR);
     } else {

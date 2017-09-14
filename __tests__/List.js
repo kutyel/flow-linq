@@ -153,13 +153,15 @@ describe('List class', () => {
   test('elementAt', () => {
     const names: List<string> = new List(['Hartono', 'Adams', 'Andersen'])
     expect(names.elementAt(0)).toBe('Hartono')
-    // TODO: expect(names.elementAt(3)).toThrowError();
+    expect(() => names.elementAt(3)).toThrowError(/ArgumentOutOfRangeException/)
   })
 
   test('elementAtOrDefault', () => {
     const names: List<string> = new List(['Hartono', 'Adams', 'Andersen'])
     expect(names.elementAtOrDefault(0)).toBe('Hartono')
-    expect(names.elementAtOrDefault(3)).toBeUndefined()
+    expect(() => names.elementAtOrDefault(3)).toThrowError(
+      /ArgumentOutOfRangeException/
+    )
   })
 
   test('except', () => {
@@ -313,7 +315,7 @@ describe('List class', () => {
   test('last', () => {
     expect(new List(['what', 'is', 'up']).last()).toBe('up')
     expect(new List([1, 2, 3, 4, 5]).last(x => x > 2)).toBe(5)
-    // TODO: expect(new List().last()).toThrowError();
+    expect(() => new List().last()).toThrowError(/InvalidOperationException/)
   })
 
   test('lastOrDefault', () => {

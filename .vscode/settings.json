@@ -1,6 +1,11 @@
 {
   "flow.useNPMPackagedFlow": true,
   "editor.formatOnSave": true,
-  "javascript.format.enable": false,
-  "prettier.eslintIntegration": true
+  "javascript.format.enable": true,
+  "javascript.validate.enable": false,
+  "prettier.printWidth": 80,
+  "prettier.semi": false,
+  "prettier.tabWidth": 2,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5"
 }
