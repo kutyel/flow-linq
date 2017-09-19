@@ -1,5 +1,7 @@
 # flow-linq
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kutyel/flow-linq.svg)](https://greenkeeper.io/)
+
 [![Standard - JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 [![Node version](https://img.shields.io/node/v/flow-linq.svg?style=flat-square)](https://www.npmjs.org/package/flow-linq)
